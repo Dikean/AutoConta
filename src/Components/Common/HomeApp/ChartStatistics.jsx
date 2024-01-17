@@ -11,7 +11,7 @@ function ChartStatistics({onClose}) {
   return (
     <>
     <Background onClose={onClose}>
-      <div className="container">
+      <div className="container p-[50px]">
       <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
             <Paper elevation={3} style={{ padding: '30px' }}>

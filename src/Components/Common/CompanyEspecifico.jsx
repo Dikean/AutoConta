@@ -15,7 +15,7 @@ import Chip from '@mui/material/Chip';
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
 import Tooltip from '@mui/material/Tooltip';
-
+import { Divider } from '@mui/material';
 
 //icons
 import CopyAllIcon from '@mui/icons-material/CopyAll';
@@ -25,7 +25,7 @@ import Navbar_sidebar from './Navbar_sidebar'
 import Auditoria_CompanyEspecific_Breadcrumbs from './Breadcrumbs/Auditoria_CompanyEspecific_Breadcrumbs';
 import BarChart from './Chart/BarChart';
 import PieChart from './Chart/PieChart';
-import { Divider } from '@mui/material';
+import CityVideo from "../../Assets/Videos/City.mp4";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -70,7 +70,7 @@ function CompanyEspecifico() {
             poster="https://assets.codepen.io/6093409/river.jpg"
           >
             <source
-              src="https://assets.codepen.io/6093409/river.mp4"
+              src={CityVideo}
               type="video/mp4"
             />
           </video>
