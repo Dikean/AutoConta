@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 //Componente
 import Loading from './Loading';
@@ -19,6 +20,7 @@ import UnauthenticatedView from './UnauthenticatedView';
 import MenuAll from '../Auth/MenuAll';
 import Notifications from './Notifications';
 import ButtonHelp from './Button/ButtonHelp';
+
 //auth 0
 import { useAuth0 } from "@auth0/auth0-react";
 import {jwtDecode} from 'jwt-decode';
@@ -148,6 +150,10 @@ function Navbar_sidebar({ children }) {
           console.log("Roles: ", decodedToken['https://miapp.com/roles']);
           console.log("Permisos: ", decodedToken['https://miapp.com/permissions']);
           
+          //cookies
+          Cookies.set('authToken', idToken); 
+          Cookies.set('authRoles', decodedToken['https://miapp.com/roles']); 
+          Cookies.set('authPermisos', decodedToken['https://miapp.com/permissions']); 
 
         }
       } catch (error) {
