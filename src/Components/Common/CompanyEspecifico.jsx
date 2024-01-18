@@ -25,7 +25,7 @@ import Navbar_sidebar from './Navbar_sidebar'
 import Auditoria_CompanyEspecific_Breadcrumbs from './Breadcrumbs/Auditoria_CompanyEspecific_Breadcrumbs';
 import BarChart from './Chart/BarChart';
 import PieChart from './Chart/PieChart';
-import CityVideo from "../../Assets/Videos/City.mp4";
+// import CityVideo from "../../Assets/Videos/City.mp4";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -69,11 +69,14 @@ function CompanyEspecifico() {
             muted
             poster="https://assets.codepen.io/6093409/river.jpg"
           >
-            <source
+
+
+            {/* <source
               src={CityVideo}
               type="video/mp4"
-            />
+            /> */}
           </video>
+
         </CardCover>
         <CardContent>
           <Typography
@@ -116,13 +119,13 @@ function CompanyEspecifico() {
             <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="Item One" value="1" />
             <Tab label="Item Two" value="2" />
-            <Tab label="Item Three" value="3" />
+            <Tab label="Repositorio" value="3" />
             </TabList>
         </Box>
 
         <TabPanel value="1">Item One</TabPanel>
         <TabPanel value="2">Item Two</TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
+        <TabPanel value="3">Repositorio</TabPanel>
 
         </TabContext>
 

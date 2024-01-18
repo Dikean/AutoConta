@@ -154,6 +154,8 @@ function Navbar_sidebar({ children }) {
           Cookies.set('authToken', idToken); 
           Cookies.set('authRoles', decodedToken['https://miapp.com/roles']); 
           Cookies.set('authPermisos', decodedToken['https://miapp.com/permissions']); 
+          
+          Cookies.set('authUserId', user.id); 
 
         }
       } catch (error) {
