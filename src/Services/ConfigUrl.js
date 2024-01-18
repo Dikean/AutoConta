@@ -1,4 +1,2 @@
 // config.js
-const AppUrl = "https://autoconta-api-companys.onrender.com/";
-
-export const AppUrl;
+export const AppUrl = "https://autoconta-api-companys.onrender.com/";

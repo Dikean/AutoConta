@@ -35,6 +35,7 @@ function HomeApp(props) {
     Companys.getCompanysByUserId()
       .then(response => {
         setCompanys(response.data);
+        console.log("data"+setCompanys(response.data));
       })
       .catch(error => {
         console.error("Error al cargar las compañías", error);

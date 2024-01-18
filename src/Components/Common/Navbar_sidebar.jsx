@@ -143,12 +143,12 @@ function Navbar_sidebar({ children }) {
         const tokenClaims = await getIdTokenClaims();
         if (tokenClaims) {
           const idToken = tokenClaims.__raw; // El token de ID crudo
-          console.log("Mi Token de ID: " + idToken);
+          // console.log("Mi Token de ID: " + idToken);
 
           // Decodificar el token para obtener roles y permisos
           const decodedToken = jwtDecode(idToken);
-          console.log("Roles: ", decodedToken['https://miapp.com/roles']);
-          console.log("Permisos: ", decodedToken['https://miapp.com/permissions']);
+          // console.log("Roles: ", decodedToken['https://miapp.com/roles']);
+          // console.log("Permisos: ", decodedToken['https://miapp.com/permissions']);
           
           //cookies
           Cookies.set('authToken', idToken); 
@@ -162,7 +162,7 @@ function Navbar_sidebar({ children }) {
         console.error(error);
       }
     } else {
-      console.log("Usuario no autenticado");
+      // console.log("Usuario no autenticado");
     }
   };
 
