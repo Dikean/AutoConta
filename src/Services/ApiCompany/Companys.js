@@ -1,7 +1,9 @@
 // api/companys
+import Cookies from 'js-cookie';
 import axios from 'axios';
-import { appUrl } from '../ConfigUrl';
+import Appurl from './configUrl'
 const ApiUrl = appUrl +'api'; // Url 
+
 
 export const Companys = {
 
