@@ -29,19 +29,21 @@ import PieChartIcon from '@mui/icons-material/PieChart';
 function HomeApp(props) {
 
   //api
-  const [companys, setCompanys] = useState([]);
+  const [getcompanys, setCompanys] = useState([]);
 
   useEffect(() => {
     Companys.getCompanysByUserId()
       .then(response => {
-        setCompanys(response.data);
-        console.log("data"+setCompanys(response.data));
+        if (response && response.data) {
+          setCompanys(response.data);
+          console.log("Datos recibidos:", response.data); // Log the received data
+        }
       })
       .catch(error => {
         console.error("Error al cargar las compañías", error);
       });
   }, []);
-
+  
   //
   const [isComponentVisible, setIsComponentVisible] = useState(false);
   const [isChartVisible, setIsChartVisible] = useState(false);
@@ -51,9 +53,12 @@ function HomeApp(props) {
     setIsChartVisible(false);
   };
 
+
   return (
     <>
     
+
+
     <Navbar_sidebar>
 
     <div className="container">
@@ -90,82 +95,25 @@ function HomeApp(props) {
 
     </div>
 
-    {/* <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-        
-          <Link to="/CompanyEspecific">
-            <Card variant="outlined" >
-                <CardOverflow>
-                  <AspectRatio ratio="2">
-                    <img
-                      src="https://images.griddo.universitatcarlemany.com/c/contain/q/65/w/754/h/503/f/jpeg/por-que-estudiar-administracion-y-direccion-de-empresas-0"
-                      loading="lazy"
-                      alt=""
-                    />
-                  </AspectRatio>
-                </CardOverflow>
-                <CardContent>
-                  <Typography level="title-md"><BusinessIcon/> Rappi</Typography>
-                  <Typography level="body-sm"> Barranquilla</Typography>
-                </CardContent>
-                <CardOverflow variant="soft" sx={{ bgcolor: 'background.level1' }}>
-                  <Divider inset="context" />
-                  <CardContent orientation="horizontal">
-                    <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-                      6.3k views
-                    </Typography>
-                    <Divider orientation="vertical" />
-                    <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-                      1 hour ago
-                    </Typography>
-                  </CardContent>
-                </CardOverflow>
-              </Card>
-          </Link>
-        </Grid>
-    </Grid> */}
+   
 
     <Grid container spacing={2}>
-  {companys ? (
-    <div>Cargando...</div>
-  ) : companys.length > 0 ? (
-    companys.map(company => (
-      <Grid item xs={12} sm={6} md={4} lg={3} key={company.id}>
-        <Link to={`/CompanyEspecific/${company.id}`}>
-        <Card variant="outlined" >
-                <CardOverflow>
-                  <AspectRatio ratio="2">
-                    <img
-                      src="https://images.griddo.universitatcarlemany.com/c/contain/q/65/w/754/h/503/f/jpeg/por-que-estudiar-administracion-y-direccion-de-empresas-0"
-                      loading="lazy"
-                      alt=""
-                    />
-                  </AspectRatio>
-                </CardOverflow>
-                <CardContent>
-                  <Typography level="title-md"><BusinessIcon/> Rappi</Typography>
-                  <Typography level="body-sm"> Barranquilla</Typography>
-                </CardContent>
-                <CardOverflow variant="soft" sx={{ bgcolor: 'background.level1' }}>
-                  <Divider inset="context" />
-                  <CardContent orientation="horizontal">
-                    <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-                      6.3k views
-                    </Typography>
-                    <Divider orientation="vertical" />
-                    <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-                      1 hour ago
-                    </Typography>
-                  </CardContent>
-                </CardOverflow>
-              </Card>
-        </Link>
+  {getcompanys.length > 0 ? (
+    getcompanys.map((company) => (
+      <Grid item xs={12} sm={6} md={4} lg={3} key={company.CompanyId}>
+        <Card variant="outlined">
+          <Typography variant="h6">{company.NameCompany}</Typography>
+          <Typography variant="body1">Código: {company.Codigo}</Typography>
+          <Typography variant="body2">Email: {company.Email}</Typography>
+          {/* Add more fields as needed */}
+        </Card>
       </Grid>
     ))
   ) : (
-    <div>No se encontraron compañías</div>
+    <div>Cargando compañías...</div>
   )}
-</Grid>
+    </Grid>
+
 
     </div>
 
