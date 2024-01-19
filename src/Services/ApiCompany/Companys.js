@@ -19,7 +19,10 @@ export const Companys = {
   })
   .then(response => {
       // Manejar la respuesta exitosa
-      console.log("Datos recibidos:", response.data);
+
+      console.log("Datos recibidos  :", response.data);
+      return response.data
+
       // Aquí puedes hacer lo que necesites con response.data
   })
   .catch(error => {
@@ -30,25 +33,25 @@ export const Companys = {
 
   },
 
-  postCreateCompanys: (Datos) =>{
-    const token = Cookies.get('authToken'); // Obtiene el token de la 
-    const UserId = Cookies.get('authUserId'); // Obtiene el User ID de auth 0 ${UserId}
+//   postCreateCompanys: (Datos) =>{
+//     const token = Cookies.get('authToken'); // Obtiene el token de la 
+//     const UserId = Cookies.get('authUserId'); // Obtiene el User ID de auth 0 ${UserId}
   
-    return axios.post(`${ApiUrl}/companys/createCompany`, {
-      headers: {
-          'Authorization': `Bearer ${token}`// Usa el token en el encabezado de autorización
-      }
-  })
-  .then(response => {
-      // Manejar la respuesta exitosa
-      console.log("Datos recibidos:", response.data);
-      // Aquí puedes hacer lo que necesites con response.data
-  })
-  .catch(error => {
-      // Manejar el error
-      console.error("Error en la solicitud:", error);
-  });
-  }
+//     return axios.post(`${ApiUrl}/companys/createCompany`, {
+//       headers: {
+//           'Authorization': `Bearer ${token}`// Usa el token en el encabezado de autorización
+//       }
+//   })
+//   .then(response => {
+//       // Manejar la respuesta exitosa
+//       console.log("Datos recibidos:", response.data);
+//       // Aquí puedes hacer lo que necesites con response.data
+//   })
+//   .catch(error => {
+//       // Manejar el error
+//       console.error("Error en la solicitud:", error);
+//   });
+//   }
 
 //   enviarDatos: (nuevosDatos) => {
 //     return axios.post(`${BASE_URL}/user_family_info`, nuevosDatos);

@@ -31,18 +31,20 @@ function HomeApp(props) {
   //api
   const [getcompanys, setCompanys] = useState([]);
 
-  useEffect(() => {
-    Companys.getCompanysByUserId()
-      .then(response => {
-        if (response && response.data) {
-          setCompanys(response.data);
-          console.log("Datos recibidos:", response.data); // Log the received data
-        }
-      })
-      .catch(error => {
-        console.error("Error al cargar las compañías", error);
-      });
-  }, []);
+  Companys.getCompanysByUserId()
+  .then(response => {
+      console.log("Respuesta completa de la API:", response); // Para ver toda la respuesta
+      if (response) {
+         setCompanys(response);
+         console.log("Datos establecidos en el estado:", response);
+     } else {
+         console.log("La respuesta de la API no contiene datos");
+     }
+ })
+ .catch(error => {
+     console.error("Error al cargar las compañías", error);
+ });
+
   
   //
   const [isComponentVisible, setIsComponentVisible] = useState(false);
@@ -56,8 +58,7 @@ function HomeApp(props) {
 
   return (
     <>
-    
-
+  
 
     <Navbar_sidebar>
 
