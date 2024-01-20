@@ -26,6 +26,8 @@ import Navbar_sidebar from './Navbar_sidebar'
 import Auditoria_CompanyEspecific_Breadcrumbs from './Breadcrumbs/Auditoria_CompanyEspecific_Breadcrumbs';
 import BarChart from './Chart/BarChart';
 import PieChart from './Chart/PieChart';
+import Repositorio from './HomeApp/Repositorio';
+
 // import CityVideo from "../../Assets/Videos/City.mp4";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -124,15 +126,17 @@ function CompanyEspecifico() {
         <TabContext value={value}  >
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleChange} aria-label="lab API tabs example">
-            <Tab label="Item One" value="1" />
-            <Tab label="Item Two" value="2" />
-            <Tab label="Repositorio" value="3" />
+            {/* <Tab label="Item One" value="1" />
+            <Tab label="Item Two" value="2" /> */}
+            <Tab label="Repositorio" value="1" />
             </TabList>
         </Box>
-
+{/* 
         <TabPanel value="1">Item One</TabPanel>
-        <TabPanel value="2">Item Two</TabPanel>
-        <TabPanel value="3">Repositorio</TabPanel>
+        <TabPanel value="2">Item Two</TabPanel> */}
+        <TabPanel value="1">
+        <Repositorio/>
+        </TabPanel>
 
         </TabContext>
 
