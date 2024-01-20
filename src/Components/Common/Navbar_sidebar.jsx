@@ -143,7 +143,7 @@ function Navbar_sidebar({ children }) {
         const tokenClaims = await getIdTokenClaims();
         if (tokenClaims) {
           const idToken = tokenClaims.__raw; // El token de ID crudo
-          // console.log("Mi Token de ID: " + idToken);
+           console.log("Mi Token de ID: " + idToken);
 
           // Decodificar el token para obtener roles y permisos
           const decodedToken = jwtDecode(idToken);

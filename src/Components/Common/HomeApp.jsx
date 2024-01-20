@@ -30,7 +30,7 @@ function HomeApp(props) {
 
   //api
   const [getcompanys, setCompanys] = useState([]);
-
+  
   Companys.getCompanysByUserId()
   .then(response => {
       console.log("Respuesta completa de la API:", response); // Para ver toda la respuesta
@@ -102,16 +102,40 @@ function HomeApp(props) {
   {getcompanys.length > 0 ? (
     getcompanys.map((company) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={company.CompanyId}>
-        <Card variant="outlined">
-          <Typography variant="h6">{company.NameCompany}</Typography>
-          <Typography variant="body1">Código: {company.Codigo}</Typography>
-          <Typography variant="body2">Email: {company.Email}</Typography>
-          {/* Add more fields as needed */}
-        </Card>
+       <Link to="/">
+         <Card variant="outlined" >
+      <CardOverflow>
+        <AspectRatio ratio="2">
+          <img
+            src="../../Assets/Img/Company.jpg"
+            srcSet="../../"
+            loading="lazy"
+            alt="Bussness"
+          />
+        </AspectRatio>
+      </CardOverflow>
+      <CardContent>
+        <Typography level="title-md">{company.NameCompany}</Typography>
+        <Typography level="body-sm">{company.Email}</Typography>
+      </CardContent>
+      <CardOverflow variant="soft" sx={{ bgcolor: 'background.level1' }}>
+        <Divider inset="context" />
+        <CardContent orientation="horizontal">
+          <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
+            6.3k views
+          </Typography>
+          <Divider orientation="vertical" />
+          <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
+          {company.Codigo}
+          </Typography>
+        </CardContent>
+      </CardOverflow>
+    </Card>
+    </Link>
       </Grid>
     ))
   ) : (
-    <div>Cargando compañías...</div>
+    <div>Cargando compañíasa...</div>
   )}
     </Grid>
 
