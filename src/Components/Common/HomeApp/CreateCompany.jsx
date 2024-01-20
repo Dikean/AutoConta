@@ -33,8 +33,9 @@ function CreateCompany({onClose}) {
     e.preventDefault();
     // Aquí puedes agregar lógica adicional si es necesario
     Companys.postCreateCompanys({ ...formData, userId: 1557, Date: "2024-01-16", Codigo: formData.NameCompany })
-      .then(/* manejar respuesta */)
-      .catch(/* manejar error */);
+    .then(/* manejar respuesta */)
+    .catch(/* manejar error */);
+  
   };
 
   return (
@@ -42,9 +43,9 @@ function CreateCompany({onClose}) {
     <Background onClose={onClose}>
       <Card sx={{ maxWidth: 345, padding: '20px'  }}>
         <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h5" component="div">
            <BusinessIcon/> Crear Company
-            </Typography>
+          </Typography>
 
           <form className="mt-3" onSubmit={handleSubmit}>
       <TextField
@@ -70,12 +71,14 @@ function CreateCompany({onClose}) {
         value={formData.Access_key}
         onChange={handleChange}
       />
-      <Button type="submit" variant="contained" color="primary">
+      <div className="mt-5">
+      <Button type="submit" variant="contained" color="primary" >
         Crear Empresa
       </Button>
-    </form>
+      </div>
+     
+          </form>
 
-       
         </CardContent>
 
         <CardActions>

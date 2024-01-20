@@ -18,6 +18,7 @@ import Navbar_sidebar from './Navbar_sidebar'
 import Background from './HomeApp/Background';
 import ChartStatistics from './HomeApp/ChartStatistics';
 import CreateCompany from './HomeApp/CreateCompany';
+import Bussness from '../../Assets/Img/Company.jpg'
 
 //icon
 import BusinessIcon from '@mui/icons-material/Business';
@@ -33,10 +34,8 @@ function HomeApp(props) {
   
   Companys.getCompanysByUserId()
   .then(response => {
-      console.log("Respuesta completa de la API:", response); // Para ver toda la respuesta
       if (response) {
          setCompanys(response);
-         console.log("Datos establecidos en el estado:", response);
      } else {
          console.log("La respuesta de la API no contiene datos");
      }
@@ -102,16 +101,16 @@ function HomeApp(props) {
   {getcompanys.length > 0 ? (
     getcompanys.map((company) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={company.CompanyId}>
-       <Link to="/">
+       <Link to={`/CompanyEspecific/${company.CompanyId}`}>
          <Card variant="outlined" >
       <CardOverflow>
         <AspectRatio ratio="2">
-          <img
-            src="../../Assets/Img/Company.jpg"
-            srcSet="../../"
-            loading="lazy"
-            alt="Bussness"
-          />
+      
+        <img 
+        src={Bussness}
+        loading="lazy"
+        alt="Bussness"/>
+        
         </AspectRatio>
       </CardOverflow>
       <CardContent>

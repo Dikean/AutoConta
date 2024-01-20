@@ -16,6 +16,7 @@ import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
 import Tooltip from '@mui/material/Tooltip';
 import { Divider } from '@mui/material';
+import { useParams } from 'react-router-dom';
 
 //icons
 import CopyAllIcon from '@mui/icons-material/CopyAll';
@@ -38,6 +39,12 @@ const Item = styled(Paper)(({ theme }) => ({
   
 function CompanyEspecifico() {
 
+    //Params
+    const { companyId } = useParams();
+
+  console.log('datos'+companyId);
+
+
     const [value, setValue] = React.useState('1');
 
     const handleChange = (event, newValue) => {
@@ -51,7 +58,7 @@ function CompanyEspecifico() {
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           
-        <Auditoria_CompanyEspecific_Breadcrumbs NameCompany="Hola"/>
+        <Auditoria_CompanyEspecific_Breadcrumbs NameCompany="{companyData.NameCompany}"/>
 
         <Grid container spacing={2} sx={{  marginBottom: '4%' }}>
         <Grid item xs={12} md={4}>

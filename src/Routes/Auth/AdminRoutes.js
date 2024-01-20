@@ -15,7 +15,7 @@ const adminRoutes = (
       {/* <Route path="/dashboard" element={< AuditoriaHome/>} /> */}
       <Route path="/dashboard" element={<HomeApp/>} /> 
       <Route path="/Audit" element={< AuditoriaHome/>} /> 
-      <Route path="/CompanyEspecific" element={< CompanyEspecifico/>} />
+      <Route path="/CompanyEspecific/:UserId" element={< CompanyEspecifico/>} />
       <Route path="/taxes" element={< ImpuestosHome/>} />
       <Route path="/SettingsNotifications" element={< SettingsNotifications/>} />
     </>
