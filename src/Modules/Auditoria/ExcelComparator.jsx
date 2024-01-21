@@ -37,13 +37,17 @@ function ExcelComparator() {
     
                 if (isSecondFile) {
                     // Encontrar la fila que contiene 'Comprobante' y empezar a leer desde allí
-                    const startRowIndex = data.findIndex(row => row[0] === 'Comprobante');
+                    const startRowIndex = data.findIndex(row => row.includes('Comprobante'));
                     if (startRowIndex !== -1) {
                         data = data.slice(startRowIndex);
                     }
                 }
     
-                resolve(XLSX.utils.sheet_to_json(XLSX.utils.aoa_to_sheet(data))); // Convertir de nuevo a formato JSON
+                // Convertir los datos a formato JSON y mostrarlos en la consola
+                const jsonData = XLSX.utils.sheet_to_json(XLSX.utils.aoa_to_sheet(data));
+                console.log("Datos procesados del archivo:", jsonData);
+    
+                resolve(jsonData);
             };
     
             fileReader.onerror = (error) => {
@@ -51,6 +55,7 @@ function ExcelComparator() {
             };
         });
     };
+    
     
     const handleFileChange = async (e) => {
         

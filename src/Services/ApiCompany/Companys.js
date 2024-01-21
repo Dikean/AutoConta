@@ -12,7 +12,7 @@ export const Companys = {
     const token = Cookies.get('authToken'); // Obtiene el token de la 
     const UserId = Cookies.get('authUserId'); // Obtiene el User ID de auth 0 ${UserId}
   
-    return axios.get(`${ApiUrl}/companys/byUser/1557`, {
+    return axios.get(`${ApiUrl}/companys/byUser/${UserId}`, {
       headers: {
           'Authorization': `Bearer ${token}`// Usa el token en el encabezado de autorización
       }
@@ -52,7 +52,7 @@ export const Companys = {
   getCompanyDataById: (CompanyId) =>{
     const token = Cookies.get('authToken'); // Obtiene el token de la 
     
-    return axios.get(`${ApiUrl}/companys/byUser/1557`, {
+    return axios.get(`${ApiUrl}/companys/byId/${CompanyId}`, {
       headers: {
           'Authorization': `Bearer ${token}`// Usa el token en el encabezado de autorización
       }

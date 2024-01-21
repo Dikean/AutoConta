@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Cookies from 'js-cookie';
 
 //Api
 import { Companys } from '../../../Services/ApiCompany/Companys';
@@ -29,10 +28,15 @@ function CreateCompany({onClose}) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  //cookies
+  const UserId = Cookies.get('authUserId');
+
+  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí puedes agregar lógica adicional si es necesario
-    Companys.postCreateCompanys({ ...formData, userId: 1557, Date: "2024-01-16", Codigo: formData.NameCompany })
+    Companys.postCreateCompanys({ ...formData, userId: UserId, Date: "2024-01-21",	Ubicacion: "Quilla", Codigo: formData.NameCompany,  })
     .then(/* manejar respuesta */)
     .catch(/* manejar error */);
   

@@ -34,17 +34,20 @@ function ConciliacionCompra() {
                 const wb = XLSX.read(bufferArray, { type: 'buffer' });
                 const wsname = wb.SheetNames[0];
                 const ws = wb.Sheets[wsname];
-                let data = XLSX.utils.sheet_to_json(ws, { header: 1 }); // Leer datos como matriz
     
+                let data;
                 if (isSecondFile) {
-                    // Encontrar la fila que contiene 'Comprobante' y empezar a leer desde allí
-                    const startRowIndex = data.findIndex(row => row[0] === 'Comprobante');
-                    if (startRowIndex !== -1) {
-                        data = data.slice(startRowIndex);
-                    }
+                    // Para el segundo archivo, leer todos los datos sin aplicar filtros
+                    data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+                } else {
+                    // Para el primer archivo (o si no es el segundo archivo), leer los datos como antes
+                    data = XLSX.utils.sheet_to_json(ws, { header: 1 });
                 }
     
-                resolve(XLSX.utils.sheet_to_json(XLSX.utils.aoa_to_sheet(data))); // Convertir de nuevo a formato JSON
+                // Convertir los datos a formato JSON y mostrarlos en la consola
+                console.log("Datos procesados del archivo:", data);
+    
+                resolve(data);
             };
     
             fileReader.onerror = (error) => {
@@ -52,6 +55,8 @@ function ConciliacionCompra() {
             };
         });
     };
+    
+    
     
     const handleFileChange = async (e) => {
         
@@ -80,13 +85,16 @@ function ConciliacionCompra() {
     };
 
     const normalizeNumber = (value) => {
-        if (value === undefined || value === null || isNaN(value)) {
+        if (value === undefined || isNaN(value)) {
             return 0;
         }
     
         let stringValue = value.toString();
-        // Eliminar caracteres no numéricos excepto el punto decimal y el signo negativo
-        stringValue = stringValue.replace(/[^\d.-]/g, '');
+        // Primero elimina el signo negativo si está presente
+        stringValue = stringValue.replace(/^-/, '');
+    
+        // Luego elimina comas (separadores de miles) y reemplaza puntos por comas
+        stringValue = stringValue.replace(/,/g, '').replace(/\./g, ',');
         return parseFloat(stringValue);
     };
     
@@ -102,15 +110,9 @@ function ConciliacionCompra() {
     };
 
     const extraerNumerosComprobante = (comprobante) => {
-        if (typeof comprobante !== 'string') {
-            console.error('Invalid input for extraerNumerosComprobante:', comprobante);
-            return null; // O manejar el error como sea necesario
-        }
-    
         const match = comprobante.match(/\d+$/);
         return match ? match[0] : null;
     };
-    
 
     const normalizarFolio = (folio) => {
         return folio.replace(/-/g, '');
@@ -134,12 +136,10 @@ function ConciliacionCompra() {
             'TotalNormalizado': normalizeNumber(item['Total'])
         }));
 
-        console.log("Datos normalizados del archivo 1:", file1Data);
-        console.log("Datos normalizados del archivo 2:", file2Data);
-
         // Comparar los datos
         const comparison = file2Data.map(item2 => {
             let folioNumerico = extraerNumerosComprobante(item2['Comprobante']);
+            const facturaProveedor = item2['Factura proveedor'];
             
             let match = file1Data.find(item1 => item1['Folio'] === folioNumerico);
             if (!match) {
@@ -153,14 +153,9 @@ function ConciliacionCompra() {
                 resultadoComparacion = match.TotalNormalizado === item2.TotalNormalizado ? 'Existe' : 'Existe, pero los totales no coinciden';
             }
 
-            console.log("Valor de TotalNormalizado en file1Data:", match ? match.TotalNormalizado : "No encontrado");
-            console.log("Valor de TotalNormalizado en file2Data:", item2.TotalNormalizado);
-         
-
             const grupo = match ? match['Grupo'] : 'No encontrado';
             const Nombre_Receptor = match ? match['Nombre Receptor'] : 'No encontrado';
             const NIT_Receptor = match ? match['NIT Receptor'] : 'No encontrado';
-           // alert(item2['Total'])
 
             return {
                 'Factura proveedor': item2['Comprobante'],
@@ -284,7 +279,7 @@ function ConciliacionCompra() {
                             {/* ... Resto del código del formulario ... */}
                             <div className="mb-6 pt-4">
                                 <label className="mb-5 block text-xl font-semibold text-[#07074D]" style={{ fontFamily: 'Poppins' }}>
-                                    Conciliacion Compra
+                                Conciliacion Venta
                                 </label>
 
                                 <div className="mb-8" >

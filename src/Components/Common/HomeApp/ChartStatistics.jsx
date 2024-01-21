@@ -8,6 +8,11 @@ import BarChart from '../Chart/BarChart';
 import PieChart from '../Chart/PieChart';
 
 function ChartStatistics({onClose}) {
+
+  const myData = [12, 19, 3, 5, 2, 3];
+  const myLabels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'];
+
+
   return (
     <>
     <Background onClose={onClose}>
@@ -20,7 +25,7 @@ function ChartStatistics({onClose}) {
             </Grid>
             <Grid item xs={12} md={4}>
              <Paper elevation={3} style={{ padding: '30px' }}>
-               <PieChart/>
+             <PieChart data={myData} labels={myLabels} />
               </Paper>
             </Grid>
         </Grid>

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import Chart from 'chart.js/auto'
 
-function PieChart() {
+function PieChart({ data, labels }) {
 
   const chartRef = useRef(null);
   let chartInstance = null; // Mueve la declaración aquí
@@ -12,9 +12,9 @@ function PieChart() {
         chartInstance = new Chart(chartRef.current, {
             type: 'pie', // Cambia a 'pie'
             data: {
-                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio'],
+                labels: labels,
                 datasets: [{
-                    label: 'Ventas por Mes',
+                    label: data,
                     data: [12, 19, 3, 5, 2, 3],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',

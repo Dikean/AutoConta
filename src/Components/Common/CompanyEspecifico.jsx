@@ -63,7 +63,7 @@ function CompanyEspecifico() {
         <Auditoria_CompanyEspecific_Breadcrumbs NameCompany="{companyData.NameCompany}"/>
 
         <Grid container spacing={2} sx={{  marginBottom: '4%' }}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={6} >
 
          <Box
       component="ul"
@@ -101,7 +101,7 @@ function CompanyEspecifico() {
     
         </Box>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={5} >
 
           <h1><Chip label="Company" color="primary" /></h1>
           <p className='mt-2'>Codigo: 1564845</p>
