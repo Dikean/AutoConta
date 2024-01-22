@@ -20,12 +20,7 @@ function ChartStatistics({onClose}) {
       .then(response => {
           if (response) {
             const data = JSON.parse(response);
-            // Si los nuevos datos son diferentes a los actuales, actualiza el estado
-            if (JSON.stringify(data) !== JSON.stringify(byUserOfCompanys)) {
-              setByUserOfCompanys(data);
-            }else{
-              console.log("No cambio de datos");
-            }
+            setByUserOfCompanys(data);
           } else {
             console.log("La respuesta de la API no es un arreglo o está vacía");
           }
@@ -36,10 +31,19 @@ function ChartStatistics({onClose}) {
 }, []);
 
   // Preparar los datos para el PieChart
-  const pieChartLabels = byUserOfCompanys.map(item => item.city);
-  const pieChartData = byUserOfCompanys.map(item => item.percentage);
+
+  const [pieChartLabels, setPieChartLabels] = useState([]);
+  const [pieChartData, setPieChartData] = useState([]);
+  
+  useEffect(() => {
+    setPieChartLabels(byUserOfCompanys.map(item => item.city));
+    setPieChartData(byUserOfCompanys.map(item => item.percentage));
+  }, [byUserOfCompanys]);
+  
 
 
+  // const pieChartLabels = citiesArray
+  // const pieChartData = [20,80]
 
 
   return (

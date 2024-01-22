@@ -14,8 +14,7 @@ function PieChart({ data, labels }) {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: data,
-                    data: [12, 19, 3, 5, 2, 3],
+                    data: data,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -40,7 +39,7 @@ function PieChart({ data, labels }) {
             chartInstance.destroy();
         }
     };
-}, []);
+}, [data,labels]);
 
   return (
     <>
