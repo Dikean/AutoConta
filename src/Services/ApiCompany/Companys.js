@@ -52,7 +52,7 @@ export const Companys = {
   getCompanyDataById: (CompanyId) =>{
     const token = Cookies.get('authToken'); // Obtiene el token de la 
     
-    return axios.get(`${ApiUrl}/companys/byId/${CompanyId}`, {
+    return axios.get(`${ApiUrl}/companys/byCompany/${CompanyId}`, {
       headers: {
           'Authorization': `Bearer ${token}`// Usa el token en el encabezado de autorización
       }
@@ -69,7 +69,29 @@ export const Companys = {
       console.error("Error en la solicitud:", error);
   });
   
-  }
+  },
+
+  getbyUserCompanyChart: () =>{
+    const token = Cookies.get('authToken'); // Obtiene el token de la 
+    const UserId = Cookies.get('authUserId'); // Obtiene el User ID de auth 0 ${UserId}
+
+    return axios.get(`${ApiUrl}/companys/byUserCompanyChart/${UserId}`, {
+      headers: {
+          'Authorization': `Bearer ${token}`// Usa el token en el encabezado de autorización
+      }
+  })
+  .then(response => {
+      // Manejar la respuesta exitosa
+      return JSON.stringify(response.data)
+
+      // Aquí puedes hacer lo que necesites con response.data
+  })
+  .catch(error => {
+      // Manejar el error
+      console.error("Error en la solicitud getbyUserCompanyChart:", error);
+  });
+  
+  },
   
 
 };

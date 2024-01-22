@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -18,6 +18,8 @@ import Tooltip from '@mui/material/Tooltip';
 import { Divider } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
+//Api
+import { Companys } from '../../Services/ApiCompany/Companys';
 //icons
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 
@@ -41,17 +43,36 @@ const Item = styled(Paper)(({ theme }) => ({
   
 function CompanyEspecifico() {
 
-    //Params
-    const { companyId } = useParams();
-
-  console.log('datos'+companyId);
-
-
     const [value, setValue] = React.useState('1');
 
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
+
+    //aPI
+    //api
+    const [getcompany, setCompany] = useState([]);
+
+    let { CompanyId } = useParams();
+
+
+    useEffect(() => {
+      // Asegúrate de que estás llamando a la función correctamente
+      // Suponiendo que `getCompanyDataById` necesita un ID como argumento
+      Companys.getCompanyDataById(CompanyId)
+      .then(response => {
+          if (response) {
+              setCompany(response);
+              console.log("Respuesta: ", response);
+          } else {
+              console.log("La respuesta de la API no contiene datos");
+          }
+      })
+      .catch(error => {
+          console.error("Error al cargar las compañías", error);
+      });
+  }, []);
+  
 
   return (
    <>
@@ -59,8 +80,13 @@ function CompanyEspecifico() {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
-          
-        <Auditoria_CompanyEspecific_Breadcrumbs NameCompany="{companyData.NameCompany}"/>
+
+    
+
+        {getcompany.map((company, index) => (
+    
+         <Auditoria_CompanyEspecific_Breadcrumbs NameCompany={company.NameCompany}/>
+         ))}
 
         <Grid container spacing={2} sx={{  marginBottom: '4%' }}>
         <Grid item xs={12} md={6} >
@@ -88,27 +114,34 @@ function CompanyEspecifico() {
 
         </CardCover>
         <CardContent>
+        {getcompany.map((company, index) => (
           <Typography
             level="body-lg"
             fontWeight="lg"
             textColor="#fff"
             mt={{ xs: 12, sm: 18 }}
           >
-            Company
+           {company.NameCompany}
           </Typography>
+                ))}
         </CardContent>
       </Card> 
     
         </Box>
         </Grid>
         <Grid item xs={12} md={5} >
-
-          <h1><Chip label="Company" color="primary" /></h1>
-          <p className='mt-2'>Codigo: 1564845</p>
-          <p>Email: prueba@gmail.com</p>
-          <p>Ubicaccion: Soledad</p>
+        {getcompany.map((company, index) => (
+          <div key={index}>
+          <h1><Chip label={company.NameCompany} color="primary" /></h1>
+          <p className='mt-2'>Codigo: {company.Codigo}</p> 
+          <p>Email: {company.Email}</p>
+          <p>Ubicaccion: {company.Ubicacion}</p>
+          </div>
+         
+          ))}
+         
           <Divider sx={{width: '200px'}}></Divider>
-
+  
           <div className="mt-3">
           <Input placeholder="Access Key…" variant="soft" size="sm" 
           className='mb-2'
@@ -122,6 +155,7 @@ function CompanyEspecifico() {
 
         </Grid>
         </Grid>
+
 
         <TabContext value={value}  >
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -139,7 +173,7 @@ function CompanyEspecifico() {
         </TabPanel>
 
         </TabContext>
-
+         
         </Grid>
         {/* Columna 2 */}
         <Grid item xs={12} md={4}>

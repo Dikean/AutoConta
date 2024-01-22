@@ -32,6 +32,7 @@ function HomeApp(props) {
   //api
   const [getcompanys, setCompanys] = useState([]);
   
+  useEffect(() => {
   Companys.getCompanysByUserId()
   .then(response => {
       if (response) {
@@ -43,8 +44,8 @@ function HomeApp(props) {
  .catch(error => {
      console.error("Error al cargar las compañías", error);
  });
+}, []);
 
-  
   //
   const [isComponentVisible, setIsComponentVisible] = useState(false);
   const [isChartVisible, setIsChartVisible] = useState(false);
