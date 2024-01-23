@@ -24,6 +24,11 @@ function ConciliacionCompra() {
     const [data, setData] = useState({ file1: [], file2: [] });
     const [comparisonResult, setComparisonResult] = useState(null);
 
+
+    //
+    
+    const [Result, setResult] = useState([]);
+
     const readExcelFile = (file, isSecondFile = false) => {
         return new Promise((resolve, reject) => {
             const fileReader = new FileReader();
@@ -34,20 +39,29 @@ function ConciliacionCompra() {
                 const wb = XLSX.read(bufferArray, { type: 'buffer' });
                 const wsname = wb.SheetNames[0];
                 const ws = wb.Sheets[wsname];
+                const data = XLSX.utils.sheet_to_json(ws, { header: 1 }); // Leer datos como matriz
     
-                let data;
+                // Convertir los datos a formato JSON
+                const jsonData = XLSX.utils.sheet_to_json(XLSX.utils.aoa_to_sheet(data));
+    
                 if (isSecondFile) {
-                    // Para el segundo archivo, leer todos los datos sin aplicar filtros
-                    data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+                
+                    // Extraer solo la columna "Factura proveedor" para el segundo archivo
+                    const facturaProveedorData = jsonData.map(row => row['Factura proveedor']);
+                    const array = facturaProveedorData.split(",");
+                    
+                    const Total = jsonData.map(row => row['Total']);
+                    const array02 = Total.split(",");
+
+                    setResult(array);
+
+                    console.log("Datos de la columna 'Factura proveedor' del segundo archivo:", facturaProveedorData);
+                    console.log("Datos de la columna 'Total' del segundo archivo:", Total);
+
+                    resolve(facturaProveedorData);
                 } else {
-                    // Para el primer archivo (o si no es el segundo archivo), leer los datos como antes
-                    data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+                    resolve(jsonData);
                 }
-    
-                // Convertir los datos a formato JSON y mostrarlos en la consola
-                console.log("Datos procesados del archivo:", data);
-    
-                resolve(data);
             };
     
             fileReader.onerror = (error) => {
@@ -55,7 +69,6 @@ function ConciliacionCompra() {
             };
         });
     };
-    
     
     
     const handleFileChange = async (e) => {
@@ -84,92 +97,16 @@ function ConciliacionCompra() {
         setFiles(prev => [...prev, newFile]);
     };
 
-    const normalizeNumber = (value) => {
-        if (value === undefined || isNaN(value)) {
-            return 0;
-        }
-    
-        let stringValue = value.toString();
-        // Primero elimina el signo negativo si está presente
-        stringValue = stringValue.replace(/^-/, '');
-    
-        // Luego elimina comas (separadores de miles) y reemplaza puntos por comas
-        stringValue = stringValue.replace(/,/g, '').replace(/\./g, ',');
-        return parseFloat(stringValue);
-    };
-    
-    // Función para extraer el folio del comprobante
-    const extraerFolio = (comprobante) => {
-        if (typeof comprobante !== 'string') {
-            console.error('Invalid input for extraerFolio:', comprobante);
-            return ''; // Return an empty string or handle the error as needed
-        }
-
-        const partes = comprobante.split('-');
-        return partes[partes.length - 1]; // Devuelve la última parte, que es el número de folio
-    };
-
-    const extraerNumerosComprobante = (comprobante) => {
-        const match = comprobante.match(/\d+$/);
-        return match ? match[0] : null;
-    };
-
-    const normalizarFolio = (folio) => {
-        return folio.replace(/-/g, '');
-    };
 
     const compareData = () => {
-        // Normalizar y filtrar los datos del primer archivo
-        const file1Data = data.file1.filter(item => 
-            item['Tipo de documento'] === 'Factura electrónica' || 
-            item['Tipo de documento'] === 'Nota de crédito electrónica'
-        ).map(item => ({
-            ...item,
-            'Folio': item['Folio'].toString(), // Asegurarse de que el folio sea una cadena
-            'TotalNormalizado': normalizeNumber(item['Total'])
-        }));
-        
-        // Normalizar los datos del segundo archivo para la comparación
-        const file2Data = data.file2.map(item => ({
-            ...item,
-            'FolioExtraido': extraerFolio(item['Comprobante']),
-            'TotalNormalizado': normalizeNumber(item['Total'])
-        }));
+    
+        console.log(Result);
+    const comparison ="hola";
+    setComparisonResult(comparison);
 
-        // Comparar los datos
-        const comparison = file2Data.map(item2 => {
-            let folioNumerico = extraerNumerosComprobante(item2['Comprobante']);
-            const facturaProveedor = item2['Factura proveedor'];
-            
-            let match = file1Data.find(item1 => item1['Folio'] === folioNumerico);
-            if (!match) {
-                // Usa el comprobante completo sin guiones para la segunda comparación
-                const folioCompletoSinGuiones = normalizarFolio(item2['Comprobante']);
-                match = file1Data.find(item1 => item1['Folio'] === folioCompletoSinGuiones);
-            }
-
-            let resultadoComparacion = 'No existe';
-            if (match) {
-                resultadoComparacion = match.TotalNormalizado === item2.TotalNormalizado ? 'Existe' : 'Existe, pero los totales no coinciden';
-            }
-
-            const grupo = match ? match['Grupo'] : 'No encontrado';
-            const Nombre_Receptor = match ? match['Nombre Receptor'] : 'No encontrado';
-            const NIT_Receptor = match ? match['NIT Receptor'] : 'No encontrado';
-
-            return {
-                'Factura proveedor': item2['Comprobante'],
-                'Grupo': grupo,
-                'NIT Receptor' : NIT_Receptor,
-                'Nombre Receptor' : Nombre_Receptor,
-                'Total': item2['Total'],
-                'Coincide': resultadoComparacion,
-            };
-        });
-
-        setComparisonResult(comparison);
-        // Pasar comparisonResults a DocumentPdfComparator
+  
     };
+    
     
     const removeFile = (index) => {
         setFiles(prev => prev.filter((_, i) => i !== index));
@@ -180,94 +117,8 @@ function ConciliacionCompra() {
         });
     };
 
-        /** Table */
-    // ... tus estados y funciones existentes ...
 
-    const [searchTerm, setSearchTerm] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const [resultsPerPage, setResultsPerPage] = useState(10);
 
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
-        setCurrentPage(1); // Reiniciar a la primera página con cada nueva búsqueda
-    };
-
-    const filteredResults = comparisonResult 
-    ? comparisonResult.filter(result => {
-        const facturaProveedor = result['Factura proveedor'];
-        return facturaProveedor 
-            ? facturaProveedor.toLowerCase().includes(searchTerm.toLowerCase())
-            : false;
-    })
-    : [];
-
-    // Paso 3: Crear funciones para navegar entre páginas
-    const goToPrevPage = () => {
-        setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage);
-    };
-
-    const goToNextPage = () => {
-        setCurrentPage(currentPage < totalPages ? currentPage + 1 : currentPage);
-    };
-
-    // Paso 1: Crear una función para obtener clases de estilo
-    const getStatusStyle = (status) => {
-        switch (status) {
-            case 'Existe':
-                return "inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 bg-emerald-100/60 dark:bg-gray-800";
-            case 'No existe':
-                return "inline px-3 py-1 text-sm font-normal rounded-full text-red-500 bg-red-100/60 dark:bg-gray-800";
-            case 'Existe, pero los totales no coinciden':
-                return "inline px-3 py-1 text-sm font-normal rounded-full text-yellow-500 bg-yellow-100/60 dark:bg-gray-800";
-            default:
-                return "";
-        }
-    };
-
-    const [filterStatus, setFilterStatus] = useState('Todos');
-    const [currentFilteredResults, setCurrentFilteredResults] = useState([]);
-
-    // Actualizar la lógica de filtrado y búsqueda
-    useEffect(() => {
-        const getFilteredResults = () => {
-            if (!comparisonResult) return [];
-
-            let results = comparisonResult;
-
-            // Aplicar filtro de estado
-            if (filterStatus !== 'Todos') {
-                results = results.filter(result => result['Coincide'] === filterStatus);
-            }
-
-            // Aplicar filtro de búsqueda
-            if (searchTerm) {
-                results = results.filter(result => {
-                    const facturaProveedor = result['Factura proveedor'];
-                    // Verificar que facturaProveedor no sea undefined y sea una cadena
-                    if (facturaProveedor && typeof facturaProveedor === 'string') {
-                        return facturaProveedor.toLowerCase().includes(searchTerm.toLowerCase());
-                    }
-                    return false;
-                });
-                
-                        
-            }
-
-            return results;
-        };
-
-        setCurrentFilteredResults(getFilteredResults());
-    }, [comparisonResult, filterStatus, searchTerm]); // Agregar searchTerm a las dependencias
-
-    // Cálculo de resultados paginados basado en currentFilteredResults
-    const paginatedResults = currentFilteredResults.slice(
-        (currentPage - 1) * resultsPerPage,
-        currentPage * resultsPerPage
-    );
-
-    // Cálculo del número total de páginas
-    const totalResults = currentFilteredResults.length;
-    const totalPages = Math.ceil(totalResults / resultsPerPage);
 
 
 
@@ -348,10 +199,7 @@ function ConciliacionCompra() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={() => setFilterStatus('Todos')}>Ver todos</MenuItem>
-        <MenuItem onClick={() => setFilterStatus('Existe')}>Existe</MenuItem>
-        <MenuItem onClick={() => setFilterStatus('No existe')}>No existen</MenuItem>
-        <MenuItem onClick={() => setFilterStatus('Existe, pero los totales no coinciden')}> Totales no coinciden</MenuItem>
+      
 
       </Menu>
     </div>
@@ -365,11 +213,7 @@ function ConciliacionCompra() {
                 </svg>
             </span>
 
-            <input type="text" placeholder="Buscar Factura"
-             value={searchTerm}
-             onChange={handleSearchChange}
-             class="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"/>
-        </div>
+   </div>
     </div>
 
     <div class="flex flex-col mt-6">
@@ -409,34 +253,7 @@ function ConciliacionCompra() {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                        {paginatedResults.map((result, index) => (
-    <tr key={index}>
-        <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
-            {(currentPage - 1) * resultsPerPage + index + 1} {/* Ajuste aquí */}
-        </td>
-        <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
-            {result['Factura proveedor']}
-        </td>
-        <td className="px-4 py-4 text-sm whitespace-nowrap">
-                {result['NIT Receptor']}
-            </td>
-        <td className="px-4 py-4 text-sm whitespace-nowrap">
-                {result['Nombre Receptor']}
-            </td>
-        <td className="px-4 py-4 text-sm whitespace-nowrap">
-                {result['Grupo']}
-            </td>
-        <td className="px-12 py-4 text-sm font-medium whitespace-nowrap">
-            <div className={getStatusStyle(result['Coincide'])}>
-                {result['Coincide']}
-            </div>
-        </td>
-        <td className="px-4 py-4 text-sm whitespace-nowrap">
-            {result['Total']}
-        </td>
-    </tr>
-))}
-
+                   
                 </tbody>
                     </table>
                 </div>
@@ -444,33 +261,7 @@ function ConciliacionCompra() {
         </div>
     </div>
 
-            <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
-        <div class="text-sm text-gray-500 dark:text-gray-400">
-        Pagina <span class="font-medium text-gray-700 dark:text-gray-100">{currentPage} de {totalPages}</span> 
-        </div>
-
-        <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
-            <a onClick={goToPrevPage} disabled={currentPage === 1} class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
-                </svg>
-
-                <span>
-                    Anterior
-                </span>
-            </a>
-
-            <a  onClick={goToNextPage} disabled={currentPage === totalPages} class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
-                <span>
-                   Siguiente
-                </span>
-
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
-                </svg>
-            </a>
-        </div>
-    </div>
+    
                   </section>
 
 
