@@ -28,6 +28,7 @@ function ConciliacionCompra() {
     //
     
     const [Result, setResult] = useState([]);
+    const [data2Total , setData2Total] = useState([]);
 
     const readExcelFile = (file, isSecondFile = false) => {
         return new Promise((resolve, reject) => {
@@ -46,17 +47,14 @@ function ConciliacionCompra() {
     
                 if (isSecondFile) {
                 
+                    
                     // Extraer solo la columna "Factura proveedor" para el segundo archivo
                     const facturaProveedorData = jsonData.map(row => row['Factura proveedor']);
-                    const array = facturaProveedorData.split(",");
-                    
                     const Total = jsonData.map(row => row['Total']);
-                    const array02 = Total.split(",");
+                    // const array02 = Total.split(",");
 
-                    setResult(array);
-
-                    console.log("Datos de la columna 'Factura proveedor' del segundo archivo:", facturaProveedorData);
-                    console.log("Datos de la columna 'Total' del segundo archivo:", Total);
+                    setResult(facturaProveedorData);
+                    setData2Total(Total);
 
                     resolve(facturaProveedorData);
                 } else {
@@ -69,7 +67,6 @@ function ConciliacionCompra() {
             };
         });
     };
-    
     
     const handleFileChange = async (e) => {
         
@@ -97,16 +94,13 @@ function ConciliacionCompra() {
         setFiles(prev => [...prev, newFile]);
     };
 
-
     const compareData = () => {
     
-        console.log(Result);
+    console.log(Result);
     const comparison ="hola";
     setComparisonResult(comparison);
 
-  
     };
-    
     
     const removeFile = (index) => {
         setFiles(prev => prev.filter((_, i) => i !== index));
@@ -116,11 +110,6 @@ function ConciliacionCompra() {
             return newData;
         });
     };
-
-
-
-
-
 
     return (
         <>

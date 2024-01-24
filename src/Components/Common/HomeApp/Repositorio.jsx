@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
+
 
 //icons
 import OpenWithIcon from '@mui/icons-material/OpenWith';
@@ -12,8 +13,16 @@ import AddIcon from '@mui/icons-material/Add';
 
 //Components
 import DocumentRepoCard from '../Cards/DocumentRepoCard';
+import BigFolderView from './BigFolderView';
 
 function Repositorio() {
+
+  const [isFolderVisible, setIsFolderVisible] = useState(false);
+
+  const handleCloseBackground = () => {
+    setIsFolderVisible(false);
+  };
+
   return (
     <>
     <Grid container spacing={2}>
@@ -32,7 +41,7 @@ function Repositorio() {
       <Grid item xs={12} md={6} container justifyContent="flex-end" spacing={2}>
         {/* Button */}
         <Grid item>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary"   onClick={() => setIsFolderVisible(!isFolderVisible)} >
             <OpenWithIcon/>
           </Button>
         </Grid>
@@ -43,6 +52,10 @@ function Repositorio() {
         </Grid>
       </Grid>
     </Grid>
+
+    
+    
+    {isFolderVisible && <BigFolderView onClose={handleCloseBackground} />}
 
     <main className='mt-[80px]'>
         <DocumentRepoCard/>

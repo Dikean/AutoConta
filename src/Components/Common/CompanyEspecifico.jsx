@@ -29,6 +29,7 @@ import Auditoria_CompanyEspecific_Breadcrumbs from './Breadcrumbs/Auditoria_Comp
 import BarChart from './Chart/BarChart';
 import PieChart from './Chart/PieChart';
 import Repositorio from './HomeApp/Repositorio';
+import BigFolderView from './HomeApp/BigFolderView';
 
 // import CityVideo from "../../Assets/Videos/City.mp4";
 
@@ -42,6 +43,9 @@ const Item = styled(Paper)(({ theme }) => ({
 
   
 function CompanyEspecifico() {
+
+  //
+
 
     const [value, setValue] = React.useState('1');
 
@@ -189,7 +193,6 @@ function CompanyEspecifico() {
         </Grid>
       </Grid>
     </Box>
-
 
     </Navbar_sidebar>
    </>
