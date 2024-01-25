@@ -8,6 +8,7 @@ import ExcelComparator from '../../Modules/Auditoria/ExcelComparator';
 import ImpuestosHome from '../../Modules/Impuestos/ImpuestosHome';
 import SettingsNotifications from '../../Components/Common/SettingsNotifications';
 import HomeApp from '../../Components/Common/HomeApp';
+import SiigoXml from '../../Modules/Siigo/SiigoXml';
 
 const adminRoutes = (
     <>
@@ -16,6 +17,7 @@ const adminRoutes = (
       <Route path="/dashboard" element={<HomeApp/>} /> 
       <Route path="/Audit" element={< AuditoriaHome/>} /> 
       <Route path="/CompanyEspecific/:CompanyId" element={< CompanyEspecifico/>} />
+      <Route path="/siigo" element={< SiigoXml/>} />
       <Route path="/taxes" element={< ImpuestosHome/>} />
       <Route path="/SettingsNotifications" element={< SettingsNotifications/>} />
     </>

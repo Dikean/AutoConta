@@ -11,6 +11,10 @@ import {
   import ReceiptIcon from '@mui/icons-material/Receipt';
   import Tooltip from '@mui/material/Tooltip';
 
+
+  //icon
+  import CloudIcon from '@mui/icons-material/Cloud';
+
 function MenuAll({ open }) {
   return (
     <>
@@ -42,7 +46,7 @@ function MenuAll({ open }) {
 
                {/* Impuestos */}
                <ListItem disablePadding sx={{ display: 'block' }}>
-                 <Link to="/taxes" style={{ textDecoration: 'none', color: 'inherit' }}>
+                 <Link to="/siigo" style={{ textDecoration: 'none', color: 'inherit' }}>
                  <ListItemButton
                   sx={{
                     minHeight: 48,
@@ -57,9 +61,9 @@ function MenuAll({ open }) {
                       justifyContent: 'center',
                     }}
                   >
-                  <ReceiptIcon />
+                  <CloudIcon />
             </ListItemIcon>
-             <ListItemText primary="Impuestos" sx={{ opacity: open ? 1 : 0 }} />
+             <ListItemText primary="Siigo" sx={{ opacity: open ? 1 : 0 }} />
                 </ListItemButton>
                 </Link>
               </ListItem>
