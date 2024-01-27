@@ -92,6 +92,50 @@ export const Companys = {
   });
   
   },
+
+  //storage
+  postSendDataToFirebase: (companyId, archivo) => {
+    const token = Cookies.get('authToken');
+    const UserId = Cookies.get('authUserId'); // Obtiene el User ID de auth 0 ${UserId}
+
+    const formData = new FormData();
+    formData.append('file', archivo); // Asegúrate de que 'archivo' es un objeto File
+    formData.append('companyId', companyId); // Asegúrate de que 'companyId' es una cadena
+    formData.append('UserId', UserId); // Asegúrate de que 'companyId' es una cadena
+    
+
+    return axios.post(`${ApiUrl}/companys/upload`, formData, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        }
+    })
+    .then(response => {
+        console.log("Enviado Exitosamente", response.data);
+    })
+    .catch(error => {
+        console.error("Error en la solicitud:", error);
+    });
+  },
+
+  getDocumentsByCompany: (CompanyId) =>{
+    const token = Cookies.get('authToken'); // Obtiene el token de la 
+    //companys/getDocuments/${CompanyId}
+    return axios.get(`${ApiUrl}/companys/getDocuments/${CompanyId}`, {
+      headers: {
+          'Authorization': `Bearer ${token}`// Usa el token en el encabezado de autorización
+      }
+  })
+  .then(response => {
+      return response.data
+  })
+  .catch(error => {
+      // Manejar el error
+      console.error("Error en la solicitud:", error);
+  });
   
+  },
+
+  
+
 
 };

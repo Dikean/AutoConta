@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
@@ -7,16 +7,43 @@ import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import Link from '@mui/joy/Link';
 import Favorite from '@mui/icons-material/Favorite';
-import Visibility from '@mui/icons-material/Visibility';
 import CreateNewFolder from '@mui/icons-material/CreateNewFolder';
 import VisibilityIcon from '@mui/icons-material/Visibility'
 
+import { useParams } from 'react-router-dom';
+
+//Api
+import { Companys } from '../../../Services/ApiCompany/Companys';
+
 function DocumentRepoCard() {
  
+ //api
+ const [getDocumentscompany, setDocumentsCompany] = useState([]);
+
+ let { CompanyId } = useParams();
+
+  useEffect(() => {
+    Companys.getDocumentsByCompany(CompanyId)
+    .then(response => {
+      console.log(" que recibo: ", response);
+        if (response) {
+          setDocumentsCompany(response);
+            console.log("Respuesta: ", response);
+        } else {
+            console.log("La respuesta de la API no contiene datos");
+        }
+    })
+    .catch(error => {
+        console.error("Error al cargar las compañías", error);
+    });
+  }, []);
+
   return (
         <>
 
-        <div>
+<       div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}> {/* Contenedor Flex */}
+                 
+        {getDocumentscompany.map((company, index) => (
           <Card
         variant="plain"
         sx={{
@@ -72,7 +99,7 @@ function DocumentRepoCard() {
                       display: 'block',
                     }}
                   >
-                    Yosemite
+                 {company.categoria} 
                   </Link>
                 </Typography>
                 <IconButton
@@ -81,7 +108,7 @@ function DocumentRepoCard() {
                   color="neutral"
                   sx={{ ml: 'auto', bgcolor: 'rgba(0 0 0 / 0.2)' }}
                 >
-                  <CreateNewFolder />
+                  <CreateNewFolder  target="_blank"  />
                 </IconButton>
                 <IconButton
                   size="sm"
@@ -100,7 +127,8 @@ function DocumentRepoCard() {
           National Park
         </Typography>
         <Link
-          href="#dribbble-shot"
+          href={company.rutadelarchivo}
+          target="_blank" 
           underline="none"
           sx={{
             display: 'flex',
@@ -115,6 +143,7 @@ function DocumentRepoCard() {
         </Link>
       </Box>
           </Card>
+              ))}
         </div>
      
         </>

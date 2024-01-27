@@ -14,13 +14,17 @@ import AddIcon from '@mui/icons-material/Add';
 //Components
 import DocumentRepoCard from '../Cards/DocumentRepoCard';
 import BigFolderView from './BigFolderView';
+import UploadDocumentByCompany from './UploadDocumentByCompany';
 
 function Repositorio() {
 
   const [isFolderVisible, setIsFolderVisible] = useState(false);
+  const [isUploadDocumentVisible, setIsUploadDocumentVisible] = useState(false);
 
   const handleCloseBackground = () => {
     setIsFolderVisible(false);
+    setIsUploadDocumentVisible(false);
+
   };
 
   return (
@@ -41,12 +45,12 @@ function Repositorio() {
       <Grid item xs={12} md={6} container justifyContent="flex-end" spacing={2}>
         {/* Button */}
         <Grid item>
-          <Button variant="contained" color="primary"   onClick={() => setIsFolderVisible(!isFolderVisible)} >
+          <Button variant="contained" color="primary"  onClick={() => setIsFolderVisible(!isFolderVisible)} >
             <OpenWithIcon/>
           </Button>
         </Grid>
         <Grid item>
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="primary" onClick={() => setIsUploadDocumentVisible(!isUploadDocumentVisible)}>
             <AddIcon/>
           </Button>
         </Grid>
@@ -56,6 +60,7 @@ function Repositorio() {
     
     
     {isFolderVisible && <BigFolderView onClose={handleCloseBackground} />}
+    {isUploadDocumentVisible && <UploadDocumentByCompany onClose={handleCloseBackground} />}
 
     <main className='mt-[80px]'>
         <DocumentRepoCard/>
