@@ -1,14 +1,12 @@
-import React from 'react'
+import React from 'react';
 import Button from '@mui/material/Button';
 
-
-//components
-import Navbar_sidebar from '../../Components/Common/Navbar_sidebar'
+// Components
+import Navbar_sidebar from '../../Components/Common/Navbar_sidebar';
 
 function SiigoXml() {
     const fileInputRef = React.useRef();
-    const [xmlContent, setXmlContent] = React.useState("");
-    const tagName = 'cbc:Description'; // Definir la etiqueta aquí
+    const [items, setItems] = React.useState([]);
 
     const handleButtonClick = () => {
         fileInputRef.current.click();
@@ -20,27 +18,33 @@ function SiigoXml() {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const content = e.target.result;
-                extractContentBetweenTags(content, tagName);
+                extractItems(content);
             };
             reader.readAsText(file);
         }
     };
 
-    const extractContentBetweenTags = (content, tagName) => {
-        const startTag = `<${tagName}>`;
-        const endTag = `</${tagName}>`;
-        let startIndex = content.indexOf(startTag);
-        let endIndex = content.indexOf(endTag);
+    const extractItems = (content) => {
+        const itemRegex = /<cac:InvoiceLine>(.*?)<\/cac:InvoiceLine>/gs;
+        let match;
+        const itemsArray = [];
 
-        if (startIndex !== -1 && endIndex !== -1) {
-            // Ajustar índices para incluir las etiquetas
-            endIndex = endIndex + endTag.length;
-            const partContent = content.substring(startIndex, endIndex);
-            setXmlContent(partContent);
-        } else {
-            // Si no se encuentran las etiquetas, no establecer contenido
-            setXmlContent("Etiqueta no encontrada");
+        while ((match = itemRegex.exec(content)) !== null) {
+            // Aquí puedes extraer más detalles de cada ítem si es necesario
+            const descriptionMatch = match[1].match(/<cbc:Description>(.*?)<\/cbc:Description>/);
+            const quantityMatch = match[1].match(/<cbc:InvoicedQuantity.*?>(.*?)<\/cbc:InvoicedQuantity>/);
+            const priceMatch = match[1].match(/<cbc:PriceAmount.*?>(.*?)<\/cbc:PriceAmount>/);
+
+            if (descriptionMatch && quantityMatch && priceMatch) {
+                itemsArray.push({
+                    description: descriptionMatch[1],
+                    quantity: quantityMatch[1],
+                    price: priceMatch[1]
+                });
+            }
         }
+
+        setItems(itemsArray);
     };
 
     return (
@@ -56,10 +60,16 @@ function SiigoXml() {
                         onChange={handleFileChange}
                         style={{ display: 'none' }}
                     />
-                    {xmlContent && (
+                    {items.length > 0 && (
                         <div>
-                            <h3>Contenido de &lt;{tagName}&gt;:</h3>
-                            <pre>{xmlContent}</pre> {/* Muestra el contenido XML */}
+                            <h3>Ítems de la Factura:</h3>
+                            <ul>
+                                {items.map((item, index) => (
+                                    <li key={index}>
+                                        Descripción: {item.description}, Cantidad: {item.quantity}, Precio: {item.price}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     )}
                 </div>

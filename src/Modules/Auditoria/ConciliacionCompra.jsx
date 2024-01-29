@@ -23,10 +23,7 @@ function ConciliacionCompra() {
     const [files, setFiles] = useState([]);
     const [data, setData] = useState({ file1: [], file2: [] });
     const [comparisonResult, setComparisonResult] = useState(null);
-
-
-    //
-    
+    //Hooks de guradado de lectura de excel 2
     const [Result, setResult] = useState([]);
     const [data2Total , setData2Total] = useState([]);
 
@@ -40,25 +37,32 @@ function ConciliacionCompra() {
                 const wb = XLSX.read(bufferArray, { type: 'buffer' });
                 const wsname = wb.SheetNames[0];
                 const ws = wb.Sheets[wsname];
-                const data = XLSX.utils.sheet_to_json(ws, { header: 1 }); // Leer datos como matriz
+                const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
     
                 // Convertir los datos a formato JSON
                 const jsonData = XLSX.utils.sheet_to_json(XLSX.utils.aoa_to_sheet(data));
     
-                if (isSecondFile) {
+                console.log("Datos JSON:", jsonData); // Imprimir los datos para depuración
+
                 
-                    
-                    // Extraer solo la columna "Factura proveedor" para el segundo archivo
+    
+                if (isSecondFile) {
+                    // Procesamiento para el segundo archivo
                     const facturaProveedorData = jsonData.map(row => row['Factura proveedor']);
                     const Total = jsonData.map(row => row['Total']);
-                    // const array02 = Total.split(",");
-
+    
                     setResult(facturaProveedorData);
                     setData2Total(Total);
-
+    
                     resolve(facturaProveedorData);
                 } else {
-                    resolve(jsonData);
+                    // Filtrar para el primer archivo
+                    const filteredData = jsonData.filter(row => {
+                        return row['Tipo de documento'] === 'Factura electrónica' || row['Tipo Documento'] === 'Nota de crédito electrónica';
+                    });
+    
+                    console.log("Datos Filtrados:", filteredData); // Imprimir los datos filtrados
+                    resolve(filteredData);
                 }
             };
     
@@ -97,6 +101,7 @@ function ConciliacionCompra() {
     const compareData = () => {
     
     console.log(Result);
+    console.log("total"+data2Total);
     const comparison ="hola";
     setComparisonResult(comparison);
 
