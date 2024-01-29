@@ -50,18 +50,24 @@ function ChartStatistics({onClose}) {
     <>
     <Background onClose={onClose}>
       <div className="container p-[50px]">
-      <Grid container spacing={2}>
+    
+      {/* <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
-            <Paper elevation={3} style={{ padding: '30px' }}>
+             <Paper elevation={3} style={{ padding: '30px' }}>
                <BarChart/>
-            </Paper>
+            </Paper> 
             </Grid>
             <Grid item xs={12} md={4}>
              <Paper elevation={3} style={{ padding: '30px' }}>
              <PieChart data={pieChartData} labels={pieChartLabels} />
               </Paper>
             </Grid>
-        </Grid>
+        </Grid> */}
+
+        <Paper elevation={3} style={{ padding: '30px' }}>
+        <PieChart data={pieChartData} labels={pieChartLabels} />
+        </Paper>
+
       </div>
     </Background>
     </>

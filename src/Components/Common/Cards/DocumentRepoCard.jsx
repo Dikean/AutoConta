@@ -9,7 +9,7 @@ import Link from '@mui/joy/Link';
 import Favorite from '@mui/icons-material/Favorite';
 import CreateNewFolder from '@mui/icons-material/CreateNewFolder';
 import VisibilityIcon from '@mui/icons-material/Visibility'
-
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from 'react-router-dom';
 
 //Api
@@ -19,6 +19,17 @@ function DocumentRepoCard() {
  
  //api
  const [getDocumentscompany, setDocumentsCompany] = useState([]);
+
+ const handleDelete = (documentId) => {
+  console.log("ID del documento a eliminar1:", documentId);
+  Companys.deleteDocumentsByCompany(9)
+  .then(response => {
+    console.log(" que recibo: ", response);
+  }).catch(error => {
+    console.error("Error al cargar las compañías", error);
+})
+};
+
 
  let { CompanyId } = useParams();
 
@@ -107,16 +118,9 @@ function DocumentRepoCard() {
                   variant="solid"
                   color="neutral"
                   sx={{ ml: 'auto', bgcolor: 'rgba(0 0 0 / 0.2)' }}
-                >
-                  <CreateNewFolder  target="_blank"  />
-                </IconButton>
-                <IconButton
-                  size="sm"
-                  variant="solid"
-                  color="neutral"
-                  sx={{ bgcolor: 'rgba(0 0 0 / 0.2)' }}
-                >
-                  <Favorite />
+                  onClick={() => handleDelete(company.RepositoryId	)} // Suponiendo que 'id' es la propiedad que identifica a cada documento
+              >
+                  <DeleteIcon  />
                 </IconButton>
               </Box>
             </div>
@@ -124,7 +128,7 @@ function DocumentRepoCard() {
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
         <Typography sx={{ fontSize: 'sm', fontWeight: 'md', flexGrow: 1 }}>
-          National Park
+        {company.categoria} 
         </Typography>
         <Link
           href={company.rutadelarchivo}

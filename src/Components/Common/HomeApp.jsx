@@ -122,11 +122,11 @@ function HomeApp(props) {
         <Divider inset="context" />
         <CardContent orientation="horizontal">
           <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-            6.3k views
+            Ubicacion
           </Typography>
           <Divider orientation="vertical" />
           <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-          {company.Codigo}
+          {company.Ubicacion}
           </Typography>
         </CardContent>
       </CardOverflow>

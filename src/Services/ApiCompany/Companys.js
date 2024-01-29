@@ -49,6 +49,23 @@ export const Companys = {
     });
   },
 
+  putCompanys: (Datos) => {
+    const token = Cookies.get('authToken');
+  
+    return axios.put(`${ApiUrl}/companys/updateCompany`, Datos, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      console.log("Compañía creada", response.data);
+      // Aquí puedes hacer lo que necesites con response.data
+    })
+    .catch(error => {
+      console.error("Error en la solicitud:", error);
+    });
+  },
+
   getCompanyDataById: (CompanyId) =>{
     const token = Cookies.get('authToken'); // Obtiene el token de la 
     
@@ -92,6 +109,40 @@ export const Companys = {
   });
   
   },
+
+  postJoinOneCompany: (Datos) => {
+    const token = Cookies.get('authToken');
+  
+    return axios.post(`${ApiUrl}/companys/joinOneCompany`, Datos, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      console.log("Añadido exitosamente", response.data);
+      // Aquí puedes hacer lo que necesites con response.data
+    })
+    .catch(error => {
+      console.error("Error en la solicitud:", error);
+    });
+  },
+
+  deleteDocumentsByCompany: (Datos) => {
+    const token = Cookies.get('authToken');
+  
+    return axios.delete(`${ApiUrl}/companys/deleteDocumentByCompany`, Datos, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      console.log("Eliminado exitosamente", response.data);
+    })
+    .catch(error => {
+      console.error("Error en la solicitud:", error);
+    });
+  },
+
 
   //storage
   postSendDataToFirebase: (companyId, archivo) => {

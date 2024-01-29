@@ -22,7 +22,7 @@ import { useParams } from 'react-router-dom';
 import { Companys } from '../../Services/ApiCompany/Companys';
 //icons
 import CopyAllIcon from '@mui/icons-material/CopyAll';
-
+import EditIcon from '@mui/icons-material/Edit';
 //components
 import Navbar_sidebar from './Navbar_sidebar'
 import Auditoria_CompanyEspecific_Breadcrumbs from './Breadcrumbs/Auditoria_CompanyEspecific_Breadcrumbs';
@@ -30,6 +30,7 @@ import BarChart from './Chart/BarChart';
 import PieChart from './Chart/PieChart';
 import Repositorio from './HomeApp/Repositorio';
 import BigFolderView from './HomeApp/BigFolderView';
+import EditDataCompany from './HomeApp/EditDataCompany';
 
 // import CityVideo from "../../Assets/Videos/City.mp4";
 
@@ -45,7 +46,23 @@ const Item = styled(Paper)(({ theme }) => ({
 function CompanyEspecifico() {
 
   //
+  const [isEditCompanyVisible, setIsEditCompanyVisible] = useState(false);
 
+  const handleCloseBackground = () => {
+    setIsEditCompanyVisible(false);
+  };
+
+  const handleCopyToClipboard = (value) => {
+    navigator.clipboard.writeText(value)
+      .then(() => {
+        // Opcional: Mostrar alguna notificación de éxito
+        console.log("Valor copiado al portapapeles");
+      })
+      .catch(err => {
+        // Opcional: Manejar errores de copia
+        console.error("No se pudo copiar al portapapeles", err);
+      });
+  };
 
     const [value, setValue] = React.useState('1');
 
@@ -134,7 +151,14 @@ function CompanyEspecifico() {
         <Grid item xs={12} md={5} >
         {getcompany.map((company, index) => (
           <div key={index}>
-          <h1><Chip label={company.NameCompany} color="primary" /></h1>
+
+            <div className="flex justify-between items-center">
+            <h1><Chip label={company.NameCompany} color="primary" /></h1>
+            <Tooltip title="Editar">
+            <Button onClick={() => setIsEditCompanyVisible(!isEditCompanyVisible)} className="p-1 text-xs"><EditIcon className='h-1 w-1' /></Button>
+            </Tooltip>         
+            </div>
+
           <p className='mt-2'>Codigo: {company.Codigo}</p> 
           <p>Email: {company.Email}</p>
           <p>Ubicaccion: {company.Ubicacion}</p>
@@ -143,18 +167,18 @@ function CompanyEspecifico() {
           ))}
          
           <Divider sx={{width: '200px'}}></Divider>
-  
+          {getcompany.map((company, index) => (
           <div className="mt-3">
-          <Input placeholder="Access Key…" variant="soft" size="sm" 
+          <Input placeholder='Access Key'  variant="soft" size="sm" 
           className='mb-2'
           endDecorator={
            <Tooltip title="Copiar">
-              <Button>
+              <Button onClick={() => handleCopyToClipboard(company.Codigo)}>
                 <CopyAllIcon/>
               </Button>
             </Tooltip>}/>
           </div>
-
+            ))}
         </Grid>
         </Grid>
 
@@ -177,8 +201,8 @@ function CompanyEspecifico() {
         </TabContext>
          
         </Grid>
-        {/* Columna 2 */}
-        <Grid item xs={12} md={4}>
+        {/* Columna 2 chart*/}
+        {/* <Grid item xs={12} md={4}>
 
           <Item  sx={{  marginBottom: '8%' }}>
           <PieChart/> 
@@ -186,11 +210,14 @@ function CompanyEspecifico() {
 
           <Item  sx={{  marginBottom: '5%' }}>
            <BarChart/>
-            </Item>
+          </Item> 
 
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
+
+
+    {isEditCompanyVisible && <EditDataCompany  onClose={handleCloseBackground} /> }
 
     </Navbar_sidebar>
    </>
