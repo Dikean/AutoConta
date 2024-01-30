@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Tab from '@mui/material/Tab';
+import { Box, Grid, Paper, Tab, Divider, Chip, Tooltip } from '@mui/material';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
@@ -11,18 +9,24 @@ import Card from '@mui/joy/Card';
 import CardCover from '@mui/joy/CardCover';
 import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
-import Chip from '@mui/material/Chip';
 import Input from '@mui/joy/Input';
 import Button from '@mui/joy/Button';
-import Tooltip from '@mui/material/Tooltip';
-import { Divider } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import PrintIcon from '@mui/icons-material/Print';
+import ShareIcon from '@mui/icons-material/Share';
+
+
 
 //Api
 import { Companys } from '../../Services/ApiCompany/Companys';
 //icons
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 import EditIcon from '@mui/icons-material/Edit';
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 //components
 import Navbar_sidebar from './Navbar_sidebar'
 import Auditoria_CompanyEspecific_Breadcrumbs from './Breadcrumbs/Auditoria_CompanyEspecific_Breadcrumbs';
@@ -33,6 +37,10 @@ import BigFolderView from './HomeApp/BigFolderView';
 import EditDataCompany from './HomeApp/EditDataCompany';
 
 // import CityVideo from "../../Assets/Videos/City.mp4";
+
+const actions = [
+  { icon: <DocumentScannerIcon />, name: 'Extraer Data Xml' },
+];
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -97,8 +105,13 @@ function CompanyEspecifico() {
 
   return (
    <>
-      <Navbar_sidebar>
-    <Box sx={{ flexGrow: 1 }}>
+
+   
+    <Navbar_sidebar>
+
+
+
+      <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
 
@@ -214,12 +227,32 @@ function CompanyEspecifico() {
 
         </Grid> */}
       </Grid>
-    </Box>
 
+      
+      </Box>
 
-    {isEditCompanyVisible && <EditDataCompany  onClose={handleCloseBackground} /> }
+      <Box sx={{ position: 'fixed', bottom: 16, right: 38, zIndex: 1000 }}>
+  <SpeedDial
+    ariaLabel="SpeedDial basic example"
+    icon={<SpeedDialIcon />}
+  >
+    {actions.map((action) => (
+      <SpeedDialAction
+        key={action.name}
+        icon={action.icon}
+        tooltipTitle={action.name}
+      />
+    ))}
+  </SpeedDial>
+</Box>
+  
+
+     {isEditCompanyVisible && <EditDataCompany  onClose={handleCloseBackground} /> }
 
     </Navbar_sidebar>
+    
+    
+
    </>
   )
 }

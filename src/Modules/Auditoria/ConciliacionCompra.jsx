@@ -22,7 +22,9 @@ function ConciliacionCompra() {
     /**Excel */
     const [files, setFiles] = useState([]);
     const [data, setData] = useState({ file1: [], file2: [] });
-    const [comparisonResult, setComparisonResult] = useState(null);
+    const [comparisonResult, setComparisonResult] = useState([]);
+    
+    const [isDataFile1, isItDataFile1] = useState([]);
     //Hooks de guradado de lectura de excel 2
     const [Result, setResult] = useState([]);
     const [data2Total , setData2Total] = useState([]);
@@ -41,10 +43,8 @@ function ConciliacionCompra() {
     
                 // Convertir los datos a formato JSON
                 const jsonData = XLSX.utils.sheet_to_json(XLSX.utils.aoa_to_sheet(data));
-    
-                console.log("Datos JSON:", jsonData); // Imprimir los datos para depuración
 
-                
+              
     
                 if (isSecondFile) {
                     // Procesamiento para el segundo archivo
@@ -60,8 +60,8 @@ function ConciliacionCompra() {
                     const filteredData = jsonData.filter(row => {
                         return row['Tipo de documento'] === 'Factura electrónica' || row['Tipo Documento'] === 'Nota de crédito electrónica';
                     });
-    
-                    console.log("Datos Filtrados:", filteredData); // Imprimir los datos filtrados
+
+                    isItDataFile1(filteredData);
                     resolve(filteredData);
                 }
             };
@@ -99,13 +99,31 @@ function ConciliacionCompra() {
     };
 
     const compareData = () => {
+        // Crear una nueva lista con Folio-Prefijo y campos adicionales del primer archivo
+        const modifiedDataFile1 = isDataFile1.map(item => ({
+            ...item,
+            'Folio-Prefijo': `${item.Prefijo}-${item.Folio}`,
+            'Origen': 'Archivo 1',
+            'existsInSecondFile': Result.includes(`${item.Prefijo}-${item.Folio}`),
+            'totalMatches': Result.includes(`${item.Prefijo}-${item.Folio}`) && item.Total === data2Total[Result.indexOf(`${item.Prefijo}-${item.Folio}`)]
+        }));
     
-    console.log(Result);
-    console.log("total"+data2Total);
-    const comparison ="hola";
-    setComparisonResult(comparison);
-
+        // Crear una lista para los registros del segundo archivo
+        const modifiedDataFile2 = Result.map((folioPrefijo, index) => ({
+            'Folio-Prefijo': folioPrefijo,
+            'Total': data2Total[index],
+            'Origen': 'Archivo 2',
+            'existsInFirstFile': modifiedDataFile1.some(item => item['Folio-Prefijo'] === folioPrefijo)
+        }));
+    
+        // Combinar ambas listas
+        const combinedData = [...modifiedDataFile1, ...modifiedDataFile2];
+    
+        // Actualizar el estado con los resultados de la comparación
+        setComparisonResult(combinedData);
     };
+    
+    
     
     const removeFile = (index) => {
         setFiles(prev => prev.filter((_, i) => i !== index));
@@ -116,6 +134,33 @@ function ConciliacionCompra() {
         });
     };
 
+    //paginacion
+   
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 10; // Puedes ajustar esto según tus necesidades
+    const [totalPages, setTotalPages] = useState(0);
+
+    useEffect(() => {
+        if (comparisonResult) {
+            setTotalPages(Math.ceil(comparisonResult.length / recordsPerPage));
+        }
+    }, [comparisonResult]);
+
+    const goToPrevPage = () => {
+        setCurrentPage(currentPage => Math.max(currentPage - 1, 1));
+    };
+
+    const goToNextPage = () => {
+        setCurrentPage(currentPage => Math.min(currentPage + 1, totalPages));
+    };
+
+    // Obtener los registros para la página actual
+    const currentRecords = comparisonResult.slice(
+        (currentPage - 1) * recordsPerPage,
+        currentPage * recordsPerPage
+    );
+
+
     return (
         <>
                 <div className="flex items-center justify-center">
@@ -124,7 +169,7 @@ function ConciliacionCompra() {
                             {/* ... Resto del código del formulario ... */}
                             <div className="mb-6 pt-4">
                                 <label className="mb-5 block text-xl font-semibold text-[#07074D]" style={{ fontFamily: 'Poppins' }}>
-                                Conciliacion Venta
+                                Conciliacion Compra
                                 </label>
 
                                 <div className="mb-8" >
@@ -247,13 +292,60 @@ function ConciliacionCompra() {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-                   
-                </tbody>
+                        {currentRecords.map((item, index) => (
+                            <tr key={index}>
+                                <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{index + 1}</td>
+                                <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['Folio-Prefijo']}</td>
+                                <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['Estado']}</td>
+                                <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['Nombre Receptor']}</td>
+                                <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['Grupo']}</td>
+                                <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">
+                                    {item['Origen'] === 'Archivo 1' ? 
+                                        (item['existsInSecondFile'] ? (item['totalMatches'] ? 'Totales Coinciden' : 'Totales Diferentes') : 'No encontrado en Archivo 2') : 
+                                        (item['existsInFirstFile'] ? 'Encontrado en Archivo 1' : 'No encontrado en Archivo 1')
+                                    }
+                                </td>
+                                <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['Origen']}</td>
+                           
+                            </tr>
+                        ))}
+                    </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+
+    {/* pagination */}
+
+    <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+        Pagina <span class="font-medium text-gray-700 dark:text-gray-100">{currentPage} de {totalPages}</span> 
+        </div>
+
+        <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
+            <a onClick={goToPrevPage} disabled={currentPage === 1} class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+                </svg>
+
+                <span>
+                    Anterior
+                </span>
+            </a>
+
+            <a  onClick={goToNextPage} disabled={currentPage === totalPages} class="flex items-center justify-center w-1/2 px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md sm:w-auto gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800">
+                <span>
+                   Siguiente
+                </span>
+
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 rtl:-scale-x-100">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
 
     
                   </section>

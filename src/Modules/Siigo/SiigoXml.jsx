@@ -1,8 +1,19 @@
 import React from 'react';
 import Button from '@mui/material/Button';
+import * as XLSX from 'xlsx';
 
 // Components
 import Navbar_sidebar from '../../Components/Common/Navbar_sidebar';
+import TableCheck from '../../Components/Common/Table/TableCheck';
+
+
+const columns = [
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'description', headerName: 'Description', width: 400 },
+    { field: 'quantity', headerName: 'Quantity', width: 130 },
+    { field: 'price', headerName: 'Price', width: 130 },
+    // Add more columns as needed
+];
 
 function SiigoXml() {
     const fileInputRef = React.useRef();
@@ -47,34 +58,46 @@ function SiigoXml() {
         setItems(itemsArray);
     };
 
+    //exportToExcel
+    const exportToExcel = () => {
+        const ws = XLSX.utils.json_to_sheet(items);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Items");
+
+        // Escribe el archivo y descarga
+        XLSX.writeFile(wb, "items.xlsx");
+    };
+
     return (
         <>
-            <Navbar_sidebar>
-                <div>
-                    <Button variant="text" onClick={handleButtonClick}>
-                        Upload File
-                    </Button>
-                    <input
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleFileChange}
-                        style={{ display: 'none' }}
-                    />
-                    {items.length > 0 && (
-                        <div>
-                            <h3>Ítems de la Factura:</h3>
-                            <ul>
-                                {items.map((item, index) => (
-                                    <li key={index}>
-                                        Descripción: {item.description}, Cantidad: {item.quantity}, Precio: {item.price}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
-            </Navbar_sidebar>
-        </>
+        <Navbar_sidebar>
+            <div>
+                <Button variant="text" onClick={handleButtonClick}>
+                    Upload File
+                </Button>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                />
+                {items.length > 0 && (
+                    <div>
+                        <h3>Ítems de la Factura:</h3>
+
+                        <TableCheck 
+                            rows={items.map((item, index) => ({ ...item, id: index + 1 }))}
+                            columns={columns}
+                        />
+
+                        <Button variant="contained" onClick={exportToExcel}>
+                            Descargar Excel
+                        </Button>
+                    </div>
+                )}
+            </div>
+        </Navbar_sidebar>
+    </>
     );
 }
 
