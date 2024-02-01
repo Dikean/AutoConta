@@ -147,8 +147,8 @@ function Navbar_sidebar({ children }) {
 
           // Decodificar el token para obtener roles y permisos
           const decodedToken = jwtDecode(idToken);
-          // console.log("Roles: ", decodedToken['https://miapp.com/roles']);
-          // console.log("Permisos: ", decodedToken['https://miapp.com/permissions']);
+          console.log("Roles: ", decodedToken['https://miapp.com/roles']);
+         console.log("Permisos: ", decodedToken['https://miapp.com/permissions']);
           
           //cookies
           Cookies.set('authToken', idToken); 
@@ -171,24 +171,6 @@ function Navbar_sidebar({ children }) {
   useEffect(() => {
     obtenerTokenId();
   }, [isAuthenticated]); // Agregar isAuthenticated al array de dependencias
-
-
-  // const obtenerToken = async () => {
-  //   try {
-  //     const token = await getAccessTokenSilently();
-  //     console.log("Mi first TOken: "+token);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
- 
-  // useEffect(() => {
-  //   // Esta función se ejecutará después de que el componente se haya montado
-  //   obtenerToken()
-  //   // Aquí puedes llamar a cualquier función o ejecutar cualquier código
-  // }, []); // El array vacío asegura que el efecto se ejecute solo una vez, al montar el componente
-
 
 
   const theme = useTheme();
