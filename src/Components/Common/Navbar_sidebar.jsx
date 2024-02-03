@@ -244,7 +244,7 @@ if (!isAuthenticated) {
             {/* Icon */}
          
          <ButtonHelp/>
-         <Notifications />
+         {/* <Notifications /> */}
   
             <IconButton
             size="large"
