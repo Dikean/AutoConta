@@ -26,7 +26,8 @@ function UploadDocumentByCompany({onClose}) {
     
         Companys.postSendDataToFirebase(CompanyId, file).then(response => {
             if (response) {
-                console.log("Enbviado exitosamente: ", response);
+               // Refrescar la página después de la respuesta exitosa
+               window.location.reload();
             } else {
                 console.log("La respuesta de la API no contiene datos");
             }

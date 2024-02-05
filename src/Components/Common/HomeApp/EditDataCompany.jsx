@@ -30,27 +30,23 @@ function EditDataCompany({onClose}) {
   };
 
     
-  const handleSubmit = (e) => {
-    e.preventDefault();
+      const handleSubmit = (e) => {
+        e.preventDefault();
 
-    const dataToUpdate = {
-        NameCompany: formData.NameCompany,
-        Email: formData.Email,
-        Access_key: formData.Access_key,
-        Ubicacion: formData.Ubicacion
+        const dataToUpdate = {
+            NameCompany: formData.NameCompany,
+            Email: formData.Email,
+            Access_key: formData.Access_key,
+            Ubicacion: formData.Ubicacion
+        };
+
+        Companys.putCompanys({ ...dataToUpdate, CompanyId: CompanyId })
+        .then(/* manejar respuesta */)
+        .catch(/* manejar error */);
     };
-
-    Companys.putCompanys({ ...dataToUpdate, CompanyId: CompanyId })
-    .then(/* manejar respuesta */)
-    .catch(/* manejar error */);
-};
-
 
           //api
     const [getcompany, setCompany] = useState([]);
-
-
-
 
     useEffect(() => {
       Companys.getCompanyDataById(CompanyId)
@@ -58,13 +54,14 @@ function EditDataCompany({onClose}) {
           if (response) {
               setCompany(response);
               // Actualizar formData aquí
+              const companyData = response[0];
               setFormData({
-                NameCompany: response.NameCompany,
-                Email: response.Email,
-                Access_key: response.Access_key,
-                Ubicacion: response.Ubicacion
+                NameCompany: companyData.NameCompany,
+                Email: companyData.Email,
+                Access_key: companyData.Access_key,
+                Ubicacion: companyData.Ubicacion
               });
-              console.log("Respuesta: ", response);
+              console.log("Respuesta 01: ", response);
           } else {
               console.log("La respuesta de la API no contiene datos");
           }
@@ -75,73 +72,59 @@ function EditDataCompany({onClose}) {
     }, [CompanyId]); // Asegúrate de incluir CompanyId como dependencia si es necesario
     
 
-  return (
-    <>
-    <Background onClose={onClose}>
-    <Card sx={{ maxWidth: 345, padding: '20px'  }}>
+    return (
+      <Background onClose={onClose}>
+        <Card sx={{ maxWidth: 345, padding: '20px' }}>
           <CardContent>
             <Typography gutterBottom variant="h7" component="div">
-                <div class="flex justify-between items-center">              
-                  <div>
-                    <BusinessIcon/> Editar Company
-                  </div> 
+              <div className="flex justify-between items-center">
+                <div>
+                  <BusinessIcon /> Editar Company
+                </div>
               </div>
             </Typography>
             <form className="mt-3" onSubmit={handleSubmit}>
-            {getcompany.map((company, index) => (
-  
-  <div >
-    
-        <TextField
-          name="NameCompany"
-          label="Nombre"
-          variant="standard"
-          className="mb-5"
-          value={formData.NameCompany}
-          onChange={handleChange}
-        /> 
-        <TextField
-          name="Email"
-          label="Email"
-          variant="standard"
-          className="mb-5"
-          value={formData.Email}
-          onChange={handleChange}
-        />
-        <TextField
-          name="Ubicacion"
-          label="Ubicacion"
-          variant="standard"
-          value={formData.Ubicacion}
-          onChange={handleChange}
-        />
-          <TextField
-          name="Access_Key"
-          label="Access_key"
-          variant="standard"
-          value={formData.Access_key}
-        //   value={formData.Access_key}
-        onChange={handleChange}
-        />
-        <div className="mt-5">
-        <Button type="submit" variant="contained" color="primary" >
-          Editar Empresa
-        </Button>
-        </div>
-      
-  </div>
-         ))}
+              <TextField
+                name="NameCompany"
+                label="Nombre"
+                variant="standard"
+                className="mb-5"
+                value={formData.NameCompany}
+                onChange={handleChange}
+              />
+              <TextField
+                name="Email"
+                label="Email"
+                variant="standard"
+                className="mb-5"
+                value={formData.Email}
+                onChange={handleChange}
+              />
+              <TextField
+                name="Ubicacion"
+                label="Ubicacion"
+                variant="standard"
+                value={formData.Ubicacion}
+                onChange={handleChange}
+              />
+              <TextField
+                name="Access_key"
+                label="Access_key"
+                variant="standard"
+                value={formData.Access_key}
+                onChange={handleChange}
+              />
+              <div className="mt-5">
+                <Button type="submit" variant="contained" color="primary">
+                  Editar Empresa
+                </Button>
+              </div>
             </form>
-
           </CardContent>
-        
-        <CardActions>
-         {/* <Button variant="contained">Guardar</Button> */}
-        </CardActions>
-      </Card>
-    </Background>
-    </>
-  )
-}
+        </Card>
+      </Background>
+    );
+
+  }
 
 export default EditDataCompany

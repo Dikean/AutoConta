@@ -130,7 +130,11 @@ export const Companys = {
   deleteDocumentsByCompany: (Datos) => {
     const token = Cookies.get('authToken');
   
-    return axios.delete(`${ApiUrl}/companys/deleteDocumentByCompany`, Datos, {
+    // Utilizar axios de manera que puedas incluir el cuerpo en la solicitud delete
+    return axios({
+      method: 'delete',
+      url: `${ApiUrl}/companys/deletDocumente`,
+      data: Datos, // Aquí pasas los datos en el cuerpo de la solicitud
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -139,9 +143,10 @@ export const Companys = {
       console.log("Eliminado exitosamente", response.data);
     })
     .catch(error => {
-      console.error("Error en la solicitud:", error);
+      console.error("Error en la solicitud de envio:", error);
     });
-  },
+  }
+  ,
 
 
   //storage
@@ -186,6 +191,24 @@ export const Companys = {
   
   },
 
+  //chat GPT
+
+  postSendQuestioToChatGpt: (Datos) => {
+    const token = "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";
+  
+    return axios.post(`https://api.openai.com/v1/chat/completions`, JSON.stringify(Datos), {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.data) // Devuelve directamente response.data
+    .catch(error => {
+      console.error("Error en la solicitud:", error);
+      throw error; // Propaga el error para manejarlo en el .catch de la llamada
+    });
+  }
+  
   
 
 

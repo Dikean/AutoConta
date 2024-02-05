@@ -26,7 +26,7 @@ import { Companys } from '../../Services/ApiCompany/Companys';
 //icons
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 import EditIcon from '@mui/icons-material/Edit';
-import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 //components
 import Navbar_sidebar from './Navbar_sidebar'
 import Auditoria_CompanyEspecific_Breadcrumbs from './Breadcrumbs/Auditoria_CompanyEspecific_Breadcrumbs';
@@ -35,12 +35,12 @@ import PieChart from './Chart/PieChart';
 import Repositorio from './HomeApp/Repositorio';
 import BigFolderView from './HomeApp/BigFolderView';
 import EditDataCompany from './HomeApp/EditDataCompany';
+import BotAi from './BotAi';
 
+
+import CompanyFoto from "../../Assets/Img/CompanyFoto.jpg";
 // import CityVideo from "../../Assets/Videos/City.mp4";
 
-const actions = [
-  { icon: <DocumentScannerIcon />, name: 'Extraer Data Xml' },
-];
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -55,10 +55,17 @@ function CompanyEspecifico() {
 
   //
   const [isEditCompanyVisible, setIsEditCompanyVisible] = useState(false);
+  const [isBotAiVisible, setIsBotAiVisible] = useState(false);
 
   const handleCloseBackground = () => {
     setIsEditCompanyVisible(false);
+    setIsBotAiVisible(false);
   };
+
+  const actions = [
+    { icon: <SmartToyIcon />, name: 'Bot AI', onClick: () => setIsBotAiVisible(!isBotAiVisible) },
+  ];
+  
 
   const handleCopyToClipboard = (value) => {
     navigator.clipboard.writeText(value)
@@ -136,7 +143,7 @@ function CompanyEspecifico() {
             autoPlay
             loop
             muted
-            poster="https://assets.codepen.io/6093409/river.jpg"
+            poster={CompanyFoto}
           >
             <source
               src="https://firebasestorage.googleapis.com/v0/b/autoconta-12190.appspot.com/o/ContentVideoAutoConta%2FCity.mp4?alt=media&token=e8570b07-98ea-4038-9c63-5281a1ed6ca8"
@@ -186,7 +193,7 @@ function CompanyEspecifico() {
           className='mb-2'
           endDecorator={
            <Tooltip title="Copiar">
-              <Button onClick={() => handleCopyToClipboard(company.Codigo)}>
+              <Button onClick={() => handleCopyToClipboard(company.Access_key)}>
                 <CopyAllIcon/>
               </Button>
             </Tooltip>}/>
@@ -241,6 +248,8 @@ function CompanyEspecifico() {
         key={action.name}
         icon={action.icon}
         tooltipTitle={action.name}
+        onClick={action.onClick} // Aquí se maneja el evento onClick
+       
       />
     ))}
   </SpeedDial>
@@ -248,6 +257,7 @@ function CompanyEspecifico() {
   
 
      {isEditCompanyVisible && <EditDataCompany  onClose={handleCloseBackground} /> }
+     {isBotAiVisible && <BotAi  onClose={handleCloseBackground} /> }
 
     </Navbar_sidebar>
     

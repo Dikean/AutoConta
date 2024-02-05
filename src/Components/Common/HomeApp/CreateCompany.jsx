@@ -33,7 +33,7 @@ function CreateCompany({onClose}) {
   const [formData, setFormData] = useState({
     NameCompany: '',
     Email: '',
-    Access_key: '',
+    Access_Key: '', // Cambia aquí
     Ubicacion: ''
   });
 
@@ -48,7 +48,10 @@ function CreateCompany({onClose}) {
     e.preventDefault();
     // Aquí puedes agregar lógica adicional si es necesario
     Companys.postCreateCompanys({ ...formData, userId: UserId  })
-    .then(/* manejar respuesta */)
+    .then(
+         // Aquí puedes realizar cualquier otra operación necesaria antes de recargar
+        window.location.reload()
+    )
     .catch(/* manejar error */);
   
   };
@@ -59,6 +62,7 @@ function CreateCompany({onClose}) {
     // Aquí puedes agregar lógica adicional si es necesario
     Companys.postJoinOneCompany({ Codigo:codigo, userId: UserId  })
     .then(response => {
+        window.location.reload()
     })
     .catch(error => {
       // Registrar el error en la consola
@@ -111,12 +115,13 @@ function CreateCompany({onClose}) {
           onChange={handleChange}
         />
           <TextField
-          name="Access_Key"
+          name="Access_key" // Asegúrate de que esto coincida con la propiedad del estado
           label="Access_key"
           variant="standard"
           value={formData.Access_key}
           onChange={handleChange}
         />
+
         <div className="mt-5">
         <Button type="submit" variant="contained" color="primary" >
           Crear Empresa

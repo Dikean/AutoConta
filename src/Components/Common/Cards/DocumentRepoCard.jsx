@@ -12,6 +12,9 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from 'react-router-dom';
 
+//Img
+import ImgDocumentos from '../../../Assets/Img/Documentos.jpg';
+
 //Api
 import { Companys } from '../../../Services/ApiCompany/Companys';
 
@@ -22,11 +25,12 @@ function DocumentRepoCard() {
 
  const handleDelete = (documentId) => {
   console.log("ID del documento a eliminar1:", documentId);
-  Companys.deleteDocumentsByCompany(9)
+  Companys.deleteDocumentsByCompany({id: documentId})
   .then(response => {
-    console.log(" que recibo: ", response);
+     // Refrescar la página después de la respuesta exitosa
+     window.location.reload();
   }).catch(error => {
-    console.error("Error al cargar las compañías", error);
+    console.error("Error al eliminar", error);
 })
 };
 
@@ -36,10 +40,8 @@ function DocumentRepoCard() {
   useEffect(() => {
     Companys.getDocumentsByCompany(CompanyId)
     .then(response => {
-      console.log(" que recibo: ", response);
         if (response) {
           setDocumentsCompany(response);
-            console.log("Respuesta: ", response);
         } else {
             console.log("La respuesta de la API no contiene datos");
         }
@@ -67,7 +69,7 @@ function DocumentRepoCard() {
           <AspectRatio ratio="4/3">
             <figure>
               <img
-                src="https://images.unsplash.com/photo-1515825838458-f2a94b20105a?auto=format&fit=crop&w=300"
+                src={ImgDocumentos}
                 srcSet="https://images.unsplash.com/photo-1515825838458-f2a94b20105a?auto=format&fit=crop&w=300&dpr=2 2x"
                 loading="lazy"
                 alt="Yosemite by Casey Horner"
