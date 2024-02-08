@@ -145,9 +145,7 @@ export const Companys = {
     .catch(error => {
       console.error("Error en la solicitud de envio:", error);
     });
-  }
-  ,
-
+  },
 
   //storage
   postSendDataToFirebase: (companyId, archivo) => {
@@ -191,10 +189,9 @@ export const Companys = {
   
   },
 
-  //chat GPT
-
+  //Chat GPT
   postSendQuestioToChatGpt: (Datos) => {
-    const token = "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";
+    const token = "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";
   
     return axios.post(`https://api.openai.com/v1/chat/completions`, JSON.stringify(Datos), {
       headers: {
@@ -209,7 +206,4 @@ export const Companys = {
     });
   }
   
-  
-
-
 };
