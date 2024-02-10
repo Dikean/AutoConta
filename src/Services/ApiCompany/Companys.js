@@ -4,7 +4,6 @@ import axios from 'axios';
 import { AppUrl } from '../ConfigUrl';
 const ApiUrl = AppUrl +'api'; // Url 
 
-
 export const Companys = {
 
   getCompanysByUserId: () => {
