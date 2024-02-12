@@ -273,7 +273,7 @@ if (!isAuthenticated) {
             open={isMenuOpen}
             onClose={handleMenuClose}
           >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+            {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
             <MenuItem onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Cerrar seccion</MenuItem>
             {/* Agrega aquí más opciones de menú si es necesario */}
           </Menu>

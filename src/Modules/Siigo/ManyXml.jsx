@@ -85,14 +85,20 @@ function ManyXml() {
                     />
                     {items.length > 0 && (
                         <div>
-                            <h3>Ítems de la Factura:</h3>
+                            <h1 className='p-4 text-center font-bold'>Ítems de la Factura:</h1>
+                          
                             <TableCheck 
                                 rows={items}
                                 columns={columns}
+                                className="mb-4"
                             />
-                            <Button variant="contained" onClick={exportToExcel}>
-                                Descargar Excel
-                            </Button>
+
+                            <div className="flex justify-end mt-5">
+                                <Button variant="contained" className='mt-3' onClick={exportToExcel}>
+                                    Descargar Excel
+                                </Button>
+                            </div>
+
                         </div>
                     )}
                 </div>
