@@ -10,6 +10,9 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 function ConciliacionCompra() {
 
+    //Hooks
+    const [filterStatus, setFilterStatus] = useState('Todos');
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -99,21 +102,29 @@ function ConciliacionCompra() {
     };
 
     const compareData = () => {
-        // Crear una nueva lista con Folio-Prefijo y campos adicionales del primer archivo
+        // Modifica esta sección para ajustar los estados
         const modifiedDataFile1 = isDataFile1.map(item => ({
             ...item,
             'Folio-Prefijo': `${item.Prefijo}-${item.Folio}`,
             'Origen': 'Archivo 1',
+            'Estado': item['Estado'],
             'existsInSecondFile': Result.includes(`${item.Prefijo}-${item.Folio}`),
-            'totalMatches': Result.includes(`${item.Prefijo}-${item.Folio}`) && item.Total === data2Total[Result.indexOf(`${item.Prefijo}-${item.Folio}`)]
+            'totalMatches': Result.includes(`${item.Prefijo}-${item.Folio}`) && item.Total === data2Total[Result.indexOf(`${item.Prefijo}-${item.Folio}`)],
+            // Ajuste de estado basado en la nueva especificación
+            'Estado': Result.includes(`${item.Prefijo}-${item.Folio}`) ? 
+                      (item['totalMatches'] ? 'Totales Coinciden' : 'Totales Diferentes') : 
+                      'Existe en Dian solamente'
         }));
     
-        // Crear una lista para los registros del segundo archivo
         const modifiedDataFile2 = Result.map((folioPrefijo, index) => ({
             'Folio-Prefijo': folioPrefijo,
             'Total': data2Total[index],
             'Origen': 'Archivo 2',
-            'existsInFirstFile': modifiedDataFile1.some(item => item['Folio-Prefijo'] === folioPrefijo)
+            'existsInFirstFile': modifiedDataFile1.some(item => item['Folio-Prefijo'] === folioPrefijo),
+            // Ajuste de estado para el segundo archivo
+            'Estado': modifiedDataFile1.some(item => item['Folio-Prefijo'] === folioPrefijo) ? 
+                      'Existe en Siigo solamente' : 
+                      'No encontrado en Archivo 1'
         }));
     
         // Combinar ambas listas
@@ -122,7 +133,6 @@ function ConciliacionCompra() {
         // Actualizar el estado con los resultados de la comparación
         setComparisonResult(combinedData);
     };
-    
     
     
     const removeFile = (index) => {
@@ -160,13 +170,29 @@ function ConciliacionCompra() {
         currentPage * recordsPerPage
     );
 
+    const getStatusStyle = (status) => {
+        switch (status) {
+            case 'Totales Coinciden':
+                return "inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 bg-emerald-100/60 dark:bg-gray-800";
+            case 'Totales Diferentes':
+                return "inline px-3 py-1 text-sm font-normal rounded-full text-yellow-500 bg-yellow-100/60 dark:bg-gray-800";
+            case 'Existe en Dian solamente':
+            case 'Existe en Siigo solamente':
+                return "inline px-3 py-1 text-sm font-normal rounded-full text-red-500 bg-red-100/60 dark:bg-gray-800";
+            default:
+                return "";
+        }
+    };
+
+    
+    
+
 
     return (
         <>
                 <div className="flex items-center justify-center">
                     <div className="mx-auto w-full max-w-[550px] bg-white">
                         <form className="px-9">
-                            {/* ... Resto del código del formulario ... */}
                             <div className="mb-6 pt-4">
                                 <label className="mb-5 block text-xl font-semibold text-[#07074D]" style={{ fontFamily: 'Poppins' }}>
                                 Conciliacion Compra
@@ -238,7 +264,11 @@ function ConciliacionCompra() {
           'aria-labelledby': 'basic-button',
         }}
       >
-      
+        <MenuItem onClick={() => setFilterStatus('Todos')}>Ver todos</MenuItem>
+        <MenuItem onClick={() => setFilterStatus('Existe')}>Existe</MenuItem>
+        <MenuItem onClick={() => setFilterStatus('No existe')}>No existen</MenuItem>
+        <MenuItem onClick={() => setFilterStatus('Existe, pero los totales no coinciden')}> Totales no coinciden</MenuItem>
+
 
       </Menu>
     </div>
@@ -296,17 +326,22 @@ function ConciliacionCompra() {
                             <tr key={index}>
                                 <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{index + 1}</td>
                                 <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['Folio-Prefijo']}</td>
-                                <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['Estado']}</td>
+                                <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['NIT Receptor']}</td>
                                 <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['Nombre Receptor']}</td>
                                 <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['Grupo']}</td>
                                 <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">
-                                    {item['Origen'] === 'Archivo 1' ? 
-                                        (item['existsInSecondFile'] ? (item['totalMatches'] ? 'Totales Coinciden' : 'Totales Diferentes') : 'No encontrado en Archivo 2') : 
-                                        (item['existsInFirstFile'] ? 'Encontrado en Archivo 1' : 'No encontrado en Archivo 1')
-                                    }
+                                    <div className={getStatusStyle(
+                                        item['Origen'] === 'Archivo 1' ? 
+                                        (item['existsInSecondFile'] ? (item['totalMatches'] ? 'Totales Coinciden' : 'Totales Diferentes') : 'Existe en Dian solamente') : 
+                                        (item['existsInFirstFile'] ? 'Existe en Siigo solamente' : 'No encontrado en Archivo 1')
+                                    )}>
+                                        {item['Origen'] === 'Archivo 1' ? 
+                                            (item['existsInSecondFile'] ? (item['totalMatches'] ? 'Totales Coinciden' : 'Totales Diferentes') : 'Existe en Dian solamente') : 
+                                            (item['existsInFirstFile'] ? 'Existe en Siigo solamente' : 'No encontrado en Archivo 1')
+                                        }
+                                    </div>
                                 </td>
-                                <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['Origen']}</td>
-                           
+                                <td className="py-3.5 px-4 text-sm text-gray-500 dark:text-gray-400">{item['Total']}</td>
                             </tr>
                         ))}
                     </tbody>
