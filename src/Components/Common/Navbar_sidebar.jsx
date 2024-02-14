@@ -150,9 +150,14 @@ function Navbar_sidebar({ children }) {
           console.log("Roles: ", decodedToken['https://miapp.com/roles']);
          console.log("Permisos: ", decodedToken['https://miapp.com/permissions']);
           
+          const roles = decodedToken['https://miapp.com/roles'];
+
+          // Convertir el valor de roles a una cadena JSON
+          const rolesString = JSON.stringify(roles);
+
           //cookies
           Cookies.set('authToken', idToken); 
-          Cookies.set('authRoles', decodedToken['https://miapp.com/roles']); 
+          Cookies.set('authRoles', rolesString); 
           Cookies.set('authPermisos', decodedToken['https://miapp.com/permissions']); 
           
           Cookies.set('authUserId', user.sub); 

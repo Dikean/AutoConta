@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-
+import Cookies from 'js-cookie';
 
 //icons
 import OpenWithIcon from '@mui/icons-material/OpenWith';
@@ -18,14 +18,30 @@ import UploadDocumentByCompany from './UploadDocumentByCompany';
 
 function Repositorio() {
 
+
   const [isFolderVisible, setIsFolderVisible] = useState(false);
   const [isUploadDocumentVisible, setIsUploadDocumentVisible] = useState(false);
+  const [tieneRolAdministrador, setTieneRolAdministrador] = useState(false);
 
   const handleCloseBackground = () => {
     setIsFolderVisible(false);
     setIsUploadDocumentVisible(false);
 
   };
+
+  useEffect(() => {
+    let roles = [];
+    try {
+      const rolesString = Cookies.get('authRoles');
+      if (rolesString) {
+        roles = JSON.parse(rolesString);
+        console.log("shpw roles"+roles);
+      }
+    } catch (error) {
+      console.error('Error parseando los roles desde la cookie:', error);
+    }
+    setTieneRolAdministrador(roles.includes('ModuloAuditoria_Administrador'));
+  }, []); // Dependencias vacías para ejecutar solo al montar el componente
 
   return (
     <>
@@ -50,9 +66,11 @@ function Repositorio() {
           </Button>
         </Grid>
         <Grid item>
+        {tieneRolAdministrador ? (
           <Button variant="contained" color="primary" onClick={() => setIsUploadDocumentVisible(!isUploadDocumentVisible)}>
             <AddIcon/>
           </Button>
+          ) : null}
         </Grid>
       </Grid>
     </Grid>
@@ -67,6 +85,7 @@ function Repositorio() {
     </main>
     </>
   )
+  
 }
 
 export default Repositorio

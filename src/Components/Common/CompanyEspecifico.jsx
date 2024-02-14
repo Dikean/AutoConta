@@ -20,7 +20,6 @@ import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 
 
-
 //Api
 import { Companys } from '../../Services/ApiCompany/Companys';
 //icons
@@ -52,6 +51,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
   
 function CompanyEspecifico() {
+
 
   //
   const [isEditCompanyVisible, setIsEditCompanyVisible] = useState(false);
