@@ -6,6 +6,8 @@ import Card from '@mui/material/Card';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
+import "../../../Assets/Css/ModalSweetAlert.css"
 
 //Api
 import { Companys } from '../../../Services/ApiCompany/Companys';
@@ -48,11 +50,35 @@ function CreateCompany({onClose}) {
     e.preventDefault();
     // Aquí puedes agregar lógica adicional si es necesario
     Companys.postCreateCompanys({ ...formData, userId: UserId  })
-    .then(
-         // Aquí puedes realizar cualquier otra operación necesaria antes de recargar
-        window.location.reload()
-    )
-    .catch(/* manejar error */);
+    .then(response => {
+    
+      Swal.fire({
+        title: '¡Éxito!',
+        text: 'Compañía creada exitosamente',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        customClass: {
+          popup: 'swal2-popup-custom'
+        }
+       }).then((result) => {
+        // Si el usuario hace clic en "OK", recarga la página o redirige según necesites
+        if (result.isConfirmed) {
+          window.location.reload();
+        }
+       });
+
+  })
+    .catch(error => {
+
+      Swal.fire({
+        title: 'Error',
+        text: 'No se pudo crear la compañía',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      
+      console.error('Error al unirse a la crear la empresa:', error)
+    });
   
   };
 
@@ -62,7 +88,7 @@ function CreateCompany({onClose}) {
     // Aquí puedes agregar lógica adicional si es necesario
     Companys.postJoinOneCompany({ Codigo:codigo, userId: UserId  })
     .then(response => {
-        window.location.reload()
+      console.log("Te uniste Exitosamente")
     })
     .catch(error => {
       // Registrar el error en la consola

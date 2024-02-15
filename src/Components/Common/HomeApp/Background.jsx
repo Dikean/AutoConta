@@ -2,6 +2,8 @@ import React from 'react'
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
+import "../../../Assets/Css/ModalSweetAlert.css"
+
 function Background({ onClose, children}) {
 
     const handleClickOutside = (event) => {
@@ -14,7 +16,7 @@ function Background({ onClose, children}) {
   return (
         <div 
             className="fixed inset-0 z-50 flex justify-center items-center" 
-            style={{ zIndex: 9999, backdropFilter: 'blur(1.5px)', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
+            style={{ zIndex: 99, backdropFilter: 'blur(1.5px)', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
             onClick={handleClickOutside} // Agrega el detector de clics aquí
           >
 
