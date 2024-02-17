@@ -14,6 +14,7 @@ function Background({ onClose, children}) {
       };
 
   return (
+    
         <div 
             className="fixed inset-0 z-50 flex justify-center items-center" 
             style={{ zIndex: 99, backdropFilter: 'blur(1.5px)', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
@@ -22,7 +23,7 @@ function Background({ onClose, children}) {
 
         {children} {/* Renderiza los children aquí */}
 
-    </div>
+        </div>
 
   )
 }
