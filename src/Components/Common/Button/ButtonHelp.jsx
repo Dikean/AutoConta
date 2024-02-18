@@ -15,11 +15,22 @@ function ButtonHelp() {
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
+    const openWhatsApp = () => {
+      // Define el número de teléfono incluyendo el código de país sin el '+'
+      const phoneNumber = "3225080628";
+      // Codifica el mensaje que deseas enviar
+      const message = encodeURIComponent("Hola buenas, me podrian ayudar o dar un informacion");
+      // Abre una nueva ventana con la URL de WhatsApp preconfigurada con el número y el mensaje
+      window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+    };
+
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
       setAnchorEl(null);
+      openWhatsApp();
     };
   
   return (

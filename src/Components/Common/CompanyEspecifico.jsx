@@ -173,15 +173,15 @@ function CompanyEspecifico() {
           <div key={index}>
 
             <div className="flex justify-between items-center">
-            <h1><Chip label={company.NameCompany} color="primary" /></h1>
+            <h1> <strong><Chip label={company.NameCompany} color="primary" /></strong></h1>
             <Tooltip title="Editar">
             <Button onClick={() => setIsEditCompanyVisible(!isEditCompanyVisible)} className="p-1 text-xs"><EditIcon className='h-1 w-1' /></Button>
             </Tooltip>         
             </div>
 
-          <p className='mt-2'>Codigo: {company.Codigo}</p> 
-          <p>Email: {company.Email}</p>
-          <p>Ubicaccion: {company.Ubicacion}</p>
+          <p className='mt-5'> <strong>Código:</strong> {company.Codigo}</p> 
+          <p><strong>Email:</strong> {company.Email}</p>
+          <p className='mb-3'><strong>Ubicaccion:</strong> {company.Ubicacion}</p>
           </div>
          
           ))}

@@ -147,8 +147,8 @@ function Navbar_sidebar({ children }) {
 
           // Decodificar el token para obtener roles y permisos
           const decodedToken = jwtDecode(idToken);
-          console.log("Roles: ", decodedToken['https://miapp.com/roles']);
-         console.log("Permisos: ", decodedToken['https://miapp.com/permissions']);
+        //  console.log("Roles: ", decodedToken['https://miapp.com/roles']);
+         // console.log("Permisos: ", decodedToken['https://miapp.com/permissions']);
           
           const roles = decodedToken['https://miapp.com/roles'];
 
