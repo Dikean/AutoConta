@@ -173,10 +173,20 @@ function Navbar_sidebar({ children }) {
     }
   };
 
+  const deleteAllCookies = () => {
+    const cookies = document.cookie.split(";");
+  
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i];
+      const eqPos = cookie.indexOf("=");
+      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    }
+  };
+  
   useEffect(() => {
     obtenerTokenId();
   }, [isAuthenticated]); // Agregar isAuthenticated al array de dependencias
-
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -279,7 +289,11 @@ if (!isAuthenticated) {
             onClose={handleMenuClose}
           >
             {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem> */}
-            <MenuItem onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Cerrar seccion</MenuItem>
+            <MenuItem onClick={() => {
+            deleteAllCookies();
+            logout({ logoutParams: { returnTo: window.location.origin } });
+            }}>Cerrar sesión</MenuItem>
+
             {/* Agrega aquí más opciones de menú si es necesario */}
           </Menu>
 

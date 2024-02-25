@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Background from './Background'
 import Button from '@mui/material/Button';
 
 //components
-import Background from './Background'
+
 
 //Api
 import { Companys } from '../../../Services/ApiCompany/Companys';
 
 function UploadDocumentByCompany({onClose}) {
+    
 
     let { CompanyId } = useParams();
     const [file, setFile] = useState(null);
@@ -37,6 +39,8 @@ function UploadDocumentByCompany({onClose}) {
         });
     };
 
+    
+
   return (
     <>
   <Background onClose={onClose}>
@@ -57,7 +61,11 @@ function UploadDocumentByCompany({onClose}) {
                     </div>
                 )}
     </div>
+
+    
 </Background>
+
+
 
     </>
   )
