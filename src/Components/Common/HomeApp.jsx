@@ -32,23 +32,33 @@ function HomeApp(props) {
   //api
   const [getcompanys, setCompanys] = useState([]);
   
-  useEffect(() => {
-  Companys.getCompanysByUserId()
-  .then(response => {
-      if (response) {
-         setCompanys(response);
-     } else {
-         console.log("La respuesta de la API no contiene datos");
-     }
- })
- .catch(error => {
-     console.error("Error al cargar las compañías", error);
- });
-}, []);
-
-  //
+  const [cargaIntentos, setCargaIntentos] = useState(0);
   const [isComponentVisible, setIsComponentVisible] = useState(false);
   const [isChartVisible, setIsChartVisible] = useState(false);
+
+  useEffect(() => {
+    Companys.getCompanysByUserId()
+      .then(response => {
+        if (response) {
+          setCompanys(response);
+        } else {
+          console.log("La respuesta de la API no contiene datos");
+          // Incrementa el contador de intentos para reintentar la carga
+          setCargaIntentos(cargaIntentos => cargaIntentos + 1);
+        }
+      })
+      .catch(error => {
+        console.error("Error al cargar las compañías", error);
+        // Incrementa el contador de intentos para reintentar la carga
+        setCargaIntentos(cargaIntentos => cargaIntentos + 1);
+      });
+  }, [cargaIntentos]); // Dependencia del efecto
+
+  // Función para manejar el reintento manualmente, si lo necesitas
+  const reintentaCarga = () => {
+    setCargaIntentos(cargaIntentos => cargaIntentos + 1);
+  };
+
 
   const handleCloseBackground = () => {
     setIsComponentVisible(false);

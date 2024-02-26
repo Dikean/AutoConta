@@ -199,7 +199,7 @@ function Navbar_sidebar({ children }) {
     setOpen(false);
   };
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const [anchorEl, setAnchorEl] = React.useState(null);
 
 const isMenuOpen = Boolean(anchorEl);
 

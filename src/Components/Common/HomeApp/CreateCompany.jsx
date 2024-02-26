@@ -86,13 +86,23 @@ function CreateCompany({onClose}) {
   const joinOneCompany = (e) => {
     e.preventDefault();
     // Aquí puedes agregar lógica adicional si es necesario
-    Companys.postJoinOneCompany({ Codigo:codigo, userId: UserId  })
+    Companys.postJoinOneCompany({ Codigo:codigo, UserId: UserId  })
     .then(response => {
-      console.log("Te uniste Exitosamente")
+      Swal.fire({
+        title: '¡Éxito!',
+        text: 'Te uniste exitosamente.',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+      });
     })
     .catch(error => {
       // Registrar el error en la consola
-      console.error('Error al unirse a la empresa:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'Ha ocurrido un error al intentar unirse a la empresa.',
+        icon: 'error',
+        confirmButtonText: 'Ok'
+      });
     });
   
   };

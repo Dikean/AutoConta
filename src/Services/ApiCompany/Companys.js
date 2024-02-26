@@ -111,7 +111,7 @@ export const Companys = {
 
   postJoinOneCompany: (Datos) => {
     const token = Cookies.get('authToken');
-  
+    
     return axios.post(`${ApiUrl}/companys/joinOneCompany`, Datos, {
       headers: {
         'Authorization': `Bearer ${token}`
@@ -190,7 +190,7 @@ export const Companys = {
 
   //Chat GPT
   postSendQuestioToChatGpt: (Datos) => {
-    const token = "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";
+    const token = "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";
   
     return axios.post(`https://api.openai.com/v1/chat/completions`, JSON.stringify(Datos), {
       headers: {
