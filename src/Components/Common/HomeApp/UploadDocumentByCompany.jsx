@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Background from './Background'
 import Button from '@mui/material/Button';
 
+import Swal from 'sweetalert2';
 //components
 
 
@@ -28,14 +29,33 @@ function UploadDocumentByCompany({onClose}) {
     
         Companys.postSendDataToFirebase(CompanyId, file).then(response => {
             if (response) {
-               // Refrescar la página después de la respuesta exitosa
-               window.location.reload();
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Subiste el archivo exitosamente.',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                  }).then((result) => {
+                    if (result.value) {
+                      // Si el usuario presiona "Ok", refresca la página
+                      window.location.reload();
+                    }
+                  });
             } else {
                 console.log("La respuesta de la API no contiene datos");
             }
         })
         .catch(error => {
-            console.error("Error al cargar las compañías", error);
+            Swal.fire({
+                title: 'Error',
+                text: 'Ha ocurrido un error al intentar Subir los documentos.',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                if (result.value) {
+                  // Si el usuario presiona "Ok", refresca la página
+                  window.location.reload();
+                }
+              });
         });
     };
 

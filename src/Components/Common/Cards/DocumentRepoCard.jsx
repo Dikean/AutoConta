@@ -18,7 +18,8 @@ import ImgDocumentos from '../../../Assets/Img/Documentos.jpg';
 //Api
 import { Companys } from '../../../Services/ApiCompany/Companys';
 
-function DocumentRepoCard() {
+function DocumentRepoCard({ searchValue }) {
+
  
  //api
  const [getDocumentscompany, setDocumentsCompany] = useState([]);
@@ -51,12 +52,26 @@ function DocumentRepoCard() {
     });
   }, []);
 
+// Filtrar documentos basado en searchValue
+const filteredDocuments = getDocumentscompany.filter(company => {
+  // Si searchValue es vacío, retornar todos los documentos
+  if (!searchValue) return true;
+
+  // Verificar que las propiedades existan antes de llamar a toLowerCase()
+  const categoria = company.categoria ? company.categoria.toLowerCase() : '';
+  const nombre = company.nombre ? company.nombre.toLowerCase() : '';
+
+  // Modificar según cómo quieras comparar (incluyendo mayúsculas/minúsculas, etc.)
+  return categoria.includes(searchValue.toLowerCase()) || nombre.includes(searchValue.toLowerCase());
+});
+
+
   return (
         <>
 
 <       div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}> {/* Contenedor Flex */}
                  
-        {getDocumentscompany.map((company, index) => (
+        {filteredDocuments.map((company, index) => (
           <Card
         variant="plain"
         sx={{

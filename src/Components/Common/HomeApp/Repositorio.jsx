@@ -23,6 +23,13 @@ function Repositorio() {
   const [isUploadDocumentVisible, setIsUploadDocumentVisible] = useState(false);
   const [tieneRolAdministrador, setTieneRolAdministrador] = useState(false);
 
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSearchChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+  
+
   const handleCloseBackground = () => {
     setIsFolderVisible(false);
     setIsUploadDocumentVisible(false);
@@ -48,15 +55,19 @@ function Repositorio() {
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
         {/* Search */}
-      <TextField  fullWidth label=""
+        <TextField
+        fullWidth
+        label=""
         InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon /> Buscar
-          </InputAdornment>
-        ),
-         }}
-       />
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon /> Buscar
+            </InputAdornment>
+          ),
+        }}
+        onChange={handleSearchChange} // Agrega esta línea
+        />
+
       </Grid>
       <Grid item xs={12} md={6} container justifyContent="flex-end" spacing={2}>
         {/* Button */}
@@ -81,7 +92,7 @@ function Repositorio() {
     {isUploadDocumentVisible && <UploadDocumentByCompany onClose={handleCloseBackground} />}
 
     <main className='mt-[80px]'>
-        <DocumentRepoCard/>
+        <DocumentRepoCard  searchValue={searchValue} />
     </main>
     
     </>

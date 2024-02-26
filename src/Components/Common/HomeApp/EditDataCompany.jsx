@@ -7,6 +7,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Companys } from '../../../Services/ApiCompany/Companys';
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 //icons
 import BusinessIcon from '@mui/icons-material/Business';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -41,8 +43,33 @@ function EditDataCompany({onClose}) {
         };
 
         Companys.putCompanys({ ...dataToUpdate, CompanyId: CompanyId })
-        .then(/* manejar respuesta */)
-        .catch(/* manejar error */);
+        .then(response => {
+          Swal.fire({
+            title: '¡Éxito!',
+            text: 'Se editó correctamente.',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          }).then((result) => {
+            if (result.value) {
+              // Si el usuario presiona "Ok", refresca la página
+              window.location.reload();
+            }
+          });
+          
+        })
+        .catch(error => {
+          Swal.fire({
+            title: 'Error',
+            text: 'Ha ocurrido un error al intentar Editar a la empresa.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          }).then((result) => {
+            if (result.value) {
+              // Si el usuario presiona "Ok", refresca la página
+              window.location.reload();
+            }
+          });
+        });
     };
 
           //api
@@ -61,7 +88,6 @@ function EditDataCompany({onClose}) {
                 Access_key: companyData.Access_key,
                 Ubicacion: companyData.Ubicacion
               });
-              console.log("Respuesta 01: ", response);
           } else {
               console.log("La respuesta de la API no contiene datos");
           }

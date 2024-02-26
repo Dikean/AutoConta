@@ -9,6 +9,8 @@ import { Button } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
 import Tooltip from '@mui/material/Tooltip';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 //Api
 import { Companys } from '../../Services/ApiCompany/Companys';
@@ -92,23 +94,45 @@ function HomeApp(props) {
       </Tooltip>
 
       <Tooltip title="Crear Empresa">
-      <Button 
-      variant="contained" 
-      color="primary" 
-      style={{ marginLeft: '8px' }}
-      onClick={() => setIsComponentVisible(!isComponentVisible)} // Cambia el estado al hacer clic
-    >
-      <AddIcon/>
-    </Button>
+    
     </Tooltip>
 
     </div>
 
     </div>
 
+
    
 
     <Grid container spacing={2}>
+
+       {/* Card create data */}
+       <Grid item xs={12} sm={6} md={4} lg={3} onClick={() => setIsComponentVisible(!isComponentVisible)}>
+  <Card 
+    variant="outlined" 
+    sx={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      height: { xs: '100px', sm: '100%', md: '100%', lg: '100%' }, // Altura específica en móviles y adaptable en otros dispositivos
+      boxShadow: 3 
+    }}
+  >
+    <CardContent 
+      sx={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100%', // Asegura que el CardContent ocupe toda la altura del Card
+        width: '100%' // Asegura que el CardContent ocupe todo el ancho del Card para centrar el icono correctamente
+      }}
+    >
+      <AddIcon fontSize="large" />
+    </CardContent>
+  </Card>
+      </Grid>
+
+
   {getcompanys.length > 0 ? (
     getcompanys.map((company) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={company.CompanyId}>
@@ -145,7 +169,9 @@ function HomeApp(props) {
       </Grid>
     ))
   ) : (
-    <div>Cargando compañíasa...</div>
+    <Box sx={{ display: 'flex' }} className="p-4">
+    <CircularProgress />
+  </Box>
   )}
     </Grid>
 

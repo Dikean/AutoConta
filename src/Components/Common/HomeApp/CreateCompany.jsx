@@ -93,6 +93,11 @@ function CreateCompany({onClose}) {
         text: 'Te uniste exitosamente.',
         icon: 'success',
         confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {
+          // Si el usuario presiona "Ok", refresca la página
+          window.location.reload();
+        }
       });
     })
     .catch(error => {
@@ -102,6 +107,11 @@ function CreateCompany({onClose}) {
         text: 'Ha ocurrido un error al intentar unirse a la empresa.',
         icon: 'error',
         confirmButtonText: 'Ok'
+      }).then((result) => {
+        if (result.value) {
+          // Si el usuario presiona "Ok", refresca la página
+          window.location.reload();
+        }
       });
     });
   
