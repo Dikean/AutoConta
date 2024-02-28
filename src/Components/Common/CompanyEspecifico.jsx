@@ -18,14 +18,15 @@ import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
-
-
+import Cookies from 'js-cookie';
 //Api
 import { Companys } from '../../Services/ApiCompany/Companys';
 //icons
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 import EditIcon from '@mui/icons-material/Edit';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 //components
 import Navbar_sidebar from './Navbar_sidebar'
 import Auditoria_CompanyEspecific_Breadcrumbs from './Breadcrumbs/Auditoria_CompanyEspecific_Breadcrumbs';
@@ -85,12 +86,14 @@ function CompanyEspecifico() {
       setValue(newValue);
     };
 
-    //aPI
     //api
     const [getcompany, setCompany] = useState([]);
+    const [userByCompany , setUserByCompany] = useState([]);
+
+    const [getRol, SetRol] = useState('');
 
     let { CompanyId } = useParams();
-
+  
 
     useEffect(() => {
       // Asegúrate de que estás llamando a la función correctamente
@@ -107,8 +110,49 @@ function CompanyEspecifico() {
       .catch(error => {
           console.error("Error al cargar las compañías", error);
       });
+
+      
+      const UserId = Cookies.get('authUserId'); // Obtiene el User ID de auth 0 ${UserId}
+
+      Companys.postUserByCompanyEspecific({ CompanyId: CompanyId, UserId: UserId})
+      .then(response => {
+        // Asegurándose de que la respuesta sea tratada como un arreglo
+        let responseArray = response;
+        // Si la respuesta es un string, convertirla a un objeto JavaScript
+        if (typeof response === 'string') {
+          responseArray = JSON.parse(response);
+        }
+        // Asegurándose de que ahora responseArray sea un arreglo
+        if (!Array.isArray(responseArray)) {
+          responseArray = [responseArray];
+        }
+        setUserByCompany(responseArray);
+        console.log("USUARIOS: ", responseArray);
+      })
+      .catch(error => {
+        console.error("Error al cargar las compañías", error);
+      });
+
+      Companys.postGetRolInCompany({ CompanyId: CompanyId, UserId: UserId})
+      .then(response => {
+     
+        SetRol(response);
+      })
+      .catch(error => {
+        console.error("Error al cargar las compañías", error);
+      });
+
+    
+
   }, []);
   
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(4);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = userByCompany.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
    <>
@@ -174,9 +218,15 @@ function CompanyEspecifico() {
 
             <div className="flex justify-between items-center">
             <h1> <strong><Chip label={company.NameCompany} color="primary" /></strong></h1>
+
+            {getRol === "Administrator" && (
             <Tooltip title="Editar">
-            <Button onClick={() => setIsEditCompanyVisible(!isEditCompanyVisible)} className="p-1 text-xs"><EditIcon className='h-1 w-1' /></Button>
-            </Tooltip>         
+              <Button onClick={() => setIsEditCompanyVisible(!isEditCompanyVisible)} className="p-1 text-xs">
+                <EditIcon className='h-1 w-1' />
+              </Button>
+            </Tooltip>
+              )}
+            
             </div>
 
           <p className='mt-5'> <strong>Código:</strong> {company.Codigo}</p> 
@@ -187,8 +237,10 @@ function CompanyEspecifico() {
           ))}
          
           <Divider sx={{width: '200px'}}></Divider>
+    
           {getcompany.map((company, index) => (
           <div className="mt-3">
+                {getRol === "Administrator" && (
           <Input placeholder='Access Key'  variant="soft" size="sm" 
           className='mb-2'
           endDecorator={
@@ -197,8 +249,10 @@ function CompanyEspecifico() {
                 <CopyAllIcon/>
               </Button>
             </Tooltip>}/>
+                )}
           </div>
             ))}
+        
         </Grid>
         </Grid>
 
@@ -215,24 +269,59 @@ function CompanyEspecifico() {
         <TabPanel value="1">Item One</TabPanel>
         <TabPanel value="2">Item Two</TabPanel> */}
         <TabPanel value="1">
-        <Repositorio/>
+        <Repositorio RolUser={getRol}/>
         </TabPanel>
 
         </TabContext>
          
         </Grid>
-        {/* Columna 2 chart*/}
-        {/* <Grid item xs={12} md={4}>
+
+      {/* solo para Administrador de la company */}
+
+      {getRol === "Administrator" && (
+       <Grid item xs={12} md={4}>
 
           <Item  sx={{  marginBottom: '8%' }}>
-          <PieChart/> 
+            
+            <div className='p-1'>
+              <h1>Usuarios</h1>
+              <ul role="list" className="divide-y divide-gray-100 p-5">
+  {currentItems.map((person, index) => (
+    <li key={index} className="flex justify-between gap-x-6 py-5">
+      <div className="flex min-w-0 gap-x-4">
+        <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={person.UserPhoto} alt="" />
+        <div className="min-w-0 flex-auto">
+          <p className="text-sm font-semibold leading-6 text-gray-900">{person.Email}</p>
+          <p className="mt-1 truncate text-xs leading-5 text-gray-500">{person.Rol}</p>
+        </div>
+      </div>  
+      <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+        <Button><EditIcon/></Button>
+      </div>
+    </li>
+  ))}
+</ul>
+
+      <div >
+        <Button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
+          <ArrowBackIosIcon style={{ fontSize: 10 }} />
+        </Button>
+        <Button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === Math.ceil(currentItems.length / itemsPerPage)}>
+        <ArrowForwardIosIcon style={{ fontSize: 10 }} />
+        </Button>
+      </div>
+            </div>
+
           </Item>
 
+        {/* Columna 2 chart*
           <Item  sx={{  marginBottom: '5%' }}>
            <BarChart/>
-          </Item> 
+          </Item>  */}
 
-        </Grid> */}
+      </Grid>
+      )}
+      
       </Grid>
 
       

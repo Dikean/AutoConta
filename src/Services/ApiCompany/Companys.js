@@ -6,6 +6,7 @@ const ApiUrl = AppUrl +'api'; // Url
 
 export const Companys = {
 
+
   getCompanysByUserId: () => {
 
     const token = Cookies.get('authToken'); // Obtiene el token de la 
@@ -109,6 +110,44 @@ export const Companys = {
   
   },
 
+  postUserByCompanyEspecific: (Datos) => {
+    const token = Cookies.get('authToken'); // Obtiene el token de la cookie
+  
+    return axios.post(`${ApiUrl}/userscompany/getUserByAdmin`, Datos, {
+      headers: {
+        'Authorization': `Bearer ${token}`, // Usa el token en el encabezado de autorización
+        'Content-Type': 'application/json' // Asegúrate de que el servidor espera JSON
+      }
+    })
+    .then(response => {
+      return response.data; // Retorna directamente los datos, sin convertirlos a string
+    })
+    .catch(error => {
+      // Manejar el error
+      console.error("Error en la solicitud getUserByCompanyEspecific:", error);
+    });
+  },
+  
+  postGetRolInCompany: (Datos) => {
+    const token = Cookies.get('authToken'); // Obtiene el token de la cookie
+  
+    return axios.post(`${ApiUrl}/userscompany/getRolInCompany`, Datos, {
+      headers: {
+        'Authorization': `Bearer ${token}`, // Usa el token en el encabezado de autorización
+        'Content-Type': 'application/json' // Asegúrate de que el servidor espera JSON
+      }
+    })
+    .then(response => {
+
+      return response.data; // Retorna directamente los datos, sin convertirlos a string
+    })
+    .catch(error => {
+      // Manejar el error
+      console.error("Error en la solicitud getUserByCompanyEspecific:", error);
+    });
+  },
+  
+  
   postJoinOneCompany: (Datos) => {
     const token = Cookies.get('authToken');
     

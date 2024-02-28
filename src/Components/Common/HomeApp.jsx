@@ -21,7 +21,7 @@ import Background from './HomeApp/Background';
 import ChartStatistics from './HomeApp/ChartStatistics';
 import CreateCompany from './HomeApp/CreateCompany';
 import Bussness from '../../Assets/Img/Company.jpg'
-
+import Loading from './Loading';
 //icon
 import BusinessIcon from '@mui/icons-material/Business';
 import AddIcon from '@mui/icons-material/Add';
@@ -108,13 +108,15 @@ function HomeApp(props) {
 
        {/* Card create data */}
        <Grid item xs={12} sm={6} md={4} lg={3} onClick={() => setIsComponentVisible(!isComponentVisible)}>
+        
+       {getcompanys.length === 0 ? (
   <Card 
     variant="outlined" 
     sx={{ 
       display: 'flex', 
       justifyContent: 'center', 
       alignItems: 'center', 
-      height: { xs: '100px', sm: '100%', md: '100%', lg: '100%' }, // Altura específica en móviles y adaptable en otros dispositivos
+      height: { xs: '200px', sm: '200px', md: '200px', lg: '290px' },
       boxShadow: 3 
     }}
   >
@@ -123,13 +125,38 @@ function HomeApp(props) {
         display: 'flex', 
         justifyContent: 'center', 
         alignItems: 'center', 
-        height: '100%', // Asegura que el CardContent ocupe toda la altura del Card
-        width: '100%' // Asegura que el CardContent ocupe todo el ancho del Card para centrar el icono correctamente
+        height: '100%',
+        width: '100%'
       }}
     >
       <AddIcon fontSize="large" />
     </CardContent>
   </Card>
+        ) : (
+          <Card 
+            variant="outlined" 
+            sx={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              height: { xs: '200px', sm: '100%', md: '100%', lg: '100%' },
+              boxShadow: 3 
+            }}
+          >
+            <CardContent 
+              sx={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                height: '100%',
+                width: '100%'
+              }}
+            >
+              <AddIcon fontSize="large" />
+            </CardContent>
+          </Card>
+        )}
+
       </Grid>
 
 
@@ -170,7 +197,7 @@ function HomeApp(props) {
     ))
   ) : (
     <Box sx={{ display: 'flex' }} className="p-4">
-    <CircularProgress />
+    <Loading /> 
   </Box>
   )}
     </Grid>

@@ -45,11 +45,13 @@ function CreateCompany({onClose}) {
 
   //cookies
   const UserId = Cookies.get('authUserId');
+  const UserPhoto = Cookies.get('userPhoto');
+  const Email = Cookies.get('Email');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí puedes agregar lógica adicional si es necesario
-    Companys.postCreateCompanys({ ...formData, userId: UserId  })
+    Companys.postCreateCompanys({ ...formData, userId: UserId , UserPhoto: UserPhoto, EmailUserSeeRol: Email })
     .then(response => {
     
       Swal.fire({
@@ -86,7 +88,7 @@ function CreateCompany({onClose}) {
   const joinOneCompany = (e) => {
     e.preventDefault();
     // Aquí puedes agregar lógica adicional si es necesario
-    Companys.postJoinOneCompany({ Codigo:codigo, UserId: UserId  })
+    Companys.postJoinOneCompany({ Codigo:codigo, UserId: UserId, UserPhoto: UserPhoto, Email: Email })
     .then(response => {
       Swal.fire({
         title: '¡Éxito!',

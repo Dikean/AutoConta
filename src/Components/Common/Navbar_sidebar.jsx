@@ -161,6 +161,9 @@ function Navbar_sidebar({ children }) {
           Cookies.set('authPermisos', decodedToken['https://miapp.com/permissions']); 
           
           Cookies.set('authUserId', user.sub); 
+          Cookies.set('userPhoto', user.picture); 
+          Cookies.set('Email', user.email); 
+
 
         }
 
@@ -186,7 +189,7 @@ function Navbar_sidebar({ children }) {
   
   useEffect(() => {
     obtenerTokenId();
-  }, [isAuthenticated]); // Agregar isAuthenticated al array de dependencias
+  }, [isAuthenticated]); // Agregar isAuthenticated al array de dependencia
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);

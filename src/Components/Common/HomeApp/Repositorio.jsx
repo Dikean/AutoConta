@@ -16,8 +16,7 @@ import DocumentRepoCard from '../Cards/DocumentRepoCard';
 import BigFolderView from './BigFolderView';
 import UploadDocumentByCompany from './UploadDocumentByCompany';
 
-function Repositorio() {
-
+function Repositorio({RolUser}) {
 
   const [isFolderVisible, setIsFolderVisible] = useState(false);
   const [isUploadDocumentVisible, setIsUploadDocumentVisible] = useState(false);
@@ -77,11 +76,11 @@ function Repositorio() {
           </Button>
         </Grid>
         <Grid item>
-        {tieneRolAdministrador ? (
+        {RolUser === "Administrator" && (
           <Button variant="contained" color="primary" onClick={() => setIsUploadDocumentVisible(!isUploadDocumentVisible)}>
             <AddIcon/>
           </Button>
-          ) : null}
+          )}
         </Grid>
       </Grid>
     </Grid>
@@ -97,7 +96,6 @@ function Repositorio() {
     
     </>
   )
-  
 }
 
 export default Repositorio
