@@ -91,7 +91,7 @@ function Repositorio({RolUser}) {
     {isUploadDocumentVisible && <UploadDocumentByCompany onClose={handleCloseBackground} />}
 
     <main className='mt-[80px]'>
-        <DocumentRepoCard  searchValue={searchValue} />
+        <DocumentRepoCard  searchValue={searchValue} RolUser={RolUser}/>
     </main>
     
     </>

@@ -76,7 +76,10 @@ function CreateCompany({onClose}) {
         title: 'Error',
         text: 'No se pudo crear la compañía',
         icon: 'error',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
+        customClass: {
+          container: 'swal2-popup-custom '
+        }
       });
       
       console.error('Error al unirse a la crear la empresa:', error)
@@ -94,7 +97,10 @@ function CreateCompany({onClose}) {
         title: '¡Éxito!',
         text: 'Te uniste exitosamente.',
         icon: 'success',
-        confirmButtonText: 'Ok'
+        confirmButtonText: 'Ok',
+        customClass: {
+          container: 'swal2-popup-custom '
+        }
       }).then((result) => {
         if (result.value) {
           // Si el usuario presiona "Ok", refresca la página
@@ -108,7 +114,10 @@ function CreateCompany({onClose}) {
         title: 'Error',
         text: 'Ha ocurrido un error al intentar unirse a la empresa.',
         icon: 'error',
-        confirmButtonText: 'Ok'
+        confirmButtonText: 'Ok',
+        customClass: {
+          container: 'swal2-popup-custom '
+        }
       }).then((result) => {
         if (result.value) {
           // Si el usuario presiona "Ok", refresca la página

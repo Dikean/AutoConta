@@ -18,7 +18,7 @@ import ImgDocumentos from '../../../Assets/Img/Documentos.jpg';
 //Api
 import { Companys } from '../../../Services/ApiCompany/Companys';
 
-function DocumentRepoCard({ searchValue }) {
+function DocumentRepoCard({ searchValue, RolUser }) {
 
  
  //api
@@ -69,7 +69,7 @@ const filteredDocuments = getDocumentscompany.filter(company => {
   return (
         <>
 
-<       div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}> {/* Contenedor Flex */}
+     < div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}> {/* Contenedor Flex */}
                  
         {filteredDocuments.map((company, index) => (
           <Card
@@ -116,20 +116,25 @@ const filteredDocuments = getDocumentscompany.filter(company => {
                 }}
               >
                 <Typography level="h2" noWrap sx={{ fontSize: 'lg' }}>
-                  <Link
-                    href="#dribbble-shot"
-                    overlay
-                    underline="none"
-                    sx={{
-                      color: '#fff',
-                      textOverflow: 'ellipsis',
-                      overflow: 'hidden',
-                      display: 'block',
-                    }}
-                  >
-                 {company.categoria} 
-                  </Link>
+          <Link href="#dribbble-shot" overlay underline="none">
+  <span
+    style={{
+      color: '#fff',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      display: 'block',
+      width: '100%', // Asegúrate de que el span ocupe el ancho completo del Link
+    }}
+  >
+    {company.categoria}
+  </span>
+</Link>
+
+
                 </Typography>
+                {/* Button delete only for admin */}
+                {RolUser === "Administrator" && (
                 <IconButton
                   size="sm"
                   variant="solid"
@@ -139,6 +144,7 @@ const filteredDocuments = getDocumentscompany.filter(company => {
               >
                   <DeleteIcon  />
                 </IconButton>
+                )}
               </Box>
             </div>
           </CardCover>
@@ -165,7 +171,7 @@ const filteredDocuments = getDocumentscompany.filter(company => {
       </Box>
           </Card>
               ))}
-        </div>
+      </div>
      
         </>
   )

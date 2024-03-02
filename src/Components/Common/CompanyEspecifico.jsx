@@ -27,6 +27,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Loading from './Loading';
+
 //components
 import Navbar_sidebar from './Navbar_sidebar'
 import Auditoria_CompanyEspecific_Breadcrumbs from './Breadcrumbs/Auditoria_CompanyEspecific_Breadcrumbs';
@@ -36,6 +38,7 @@ import Repositorio from './HomeApp/Repositorio';
 import BigFolderView from './HomeApp/BigFolderView';
 import EditDataCompany from './HomeApp/EditDataCompany';
 import BotAi from './BotAi';
+import EditRolCompany from './EditRolCompany';
 
 
 import CompanyFoto from "../../Assets/Img/CompanyFoto.jpg";
@@ -53,15 +56,27 @@ const Item = styled(Paper)(({ theme }) => ({
   
 function CompanyEspecifico() {
 
+ 
 
   //
   const [isEditCompanyVisible, setIsEditCompanyVisible] = useState(false);
   const [isBotAiVisible, setIsBotAiVisible] = useState(false);
+  const [isEditRolVisible, setIsEditRolVisible] = useState(false);
+
+  const [selectedPerson, setSelectedPerson] = useState(null);
+
 
   const handleCloseBackground = () => {
     setIsEditCompanyVisible(false);
-    setIsBotAiVisible(false);
+    setIsBotAiVisible(false); 
+    setIsEditRolVisible(false);
   };
+
+  const handleEditClick = (person) => {
+    setSelectedPerson(person); 
+    setIsEditRolVisible(true);
+  };
+  
 
   const actions = [
     { icon: <SmartToyIcon />, name: 'Bot AI', onClick: () => setIsBotAiVisible(!isBotAiVisible) },
@@ -96,13 +111,11 @@ function CompanyEspecifico() {
   
 
     useEffect(() => {
-      // Asegúrate de que estás llamando a la función correctamente
-      // Suponiendo que `getCompanyDataById` necesita un ID como argumento
+      
       Companys.getCompanyDataById(CompanyId)
       .then(response => {
           if (response) {
               setCompany(response);
-              console.log("Respuesta: ", response);
           } else {
               console.log("La respuesta de la API no contiene datos");
           }
@@ -296,7 +309,10 @@ function CompanyEspecifico() {
         </div>
       </div>  
       <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-        <Button><EditIcon/></Button>
+      <Button onClick={() => handleEditClick(person)}>
+        <EditIcon/>
+      </Button>
+
       </div>
     </li>
   ))}
@@ -345,13 +361,14 @@ function CompanyEspecifico() {
 </Box>
   
 
-     {isEditCompanyVisible && <EditDataCompany  onClose={handleCloseBackground} /> }
-     {isBotAiVisible && <BotAi  onClose={handleCloseBackground} /> }
+    {isEditCompanyVisible && <EditDataCompany onClose={handleCloseBackground} /> }
+    {isBotAiVisible && <BotAi onClose={handleCloseBackground} /> }
+    {isEditRolVisible  && <EditRolCompany  onClose={handleCloseBackground} /> }
 
     </Navbar_sidebar>
     
     
-
+{/* selectedPerson={selectedPerson} */}
    </>
   )
 }

@@ -17,7 +17,7 @@ function Background({ onClose, children}) {
     
         <div 
             className="fixed inset-0 z-50 flex justify-center items-center" 
-            style={{ zIndex: 999, backdropFilter: 'blur(1.5px)', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
+            style={{ zIndex: 9999, backdropFilter: 'blur(1.5px)', backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
             onClick={handleClickOutside} // Agrega el detector de clics aquí
           >
 

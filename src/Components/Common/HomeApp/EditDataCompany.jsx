@@ -48,7 +48,10 @@ function EditDataCompany({onClose}) {
             title: '¡Éxito!',
             text: 'Se editó correctamente.',
             icon: 'success',
-            confirmButtonText: 'Ok'
+            confirmButtonText: 'Ok',
+            customClass: {
+              container: 'swal2-popup-custom '
+            }
           }).then((result) => {
             if (result.value) {
               // Si el usuario presiona "Ok", refresca la página

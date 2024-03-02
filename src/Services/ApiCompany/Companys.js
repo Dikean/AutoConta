@@ -186,14 +186,16 @@ export const Companys = {
   },
 
   //storage
-  postSendDataToFirebase: (companyId, archivo) => {
+  postSendDataToFirebase: (companyId, archivo, fileName, category) => {
     const token = Cookies.get('authToken');
     const UserId = Cookies.get('authUserId'); // Obtiene el User ID de auth 0 ${UserId}
 
     const formData = new FormData();
-    formData.append('file', archivo); // Asegúrate de que 'archivo' es un objeto File
-    formData.append('companyId', companyId); // Asegúrate de que 'companyId' es una cadena
-    formData.append('UserId', UserId); // Asegúrate de que 'companyId' es una cadena
+    formData.append('file', archivo);
+    formData.append('companyId', companyId); 
+    formData.append('UserId', UserId);
+    formData.append('name', fileName);
+    formData.append('category', category); 
     
 
     return axios.post(`${ApiUrl}/companys/upload`, formData, {
