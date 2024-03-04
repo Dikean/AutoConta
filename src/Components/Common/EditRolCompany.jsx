@@ -15,7 +15,7 @@ function EditRolCompany({ selectedPerson, onClose }) {
   return (
     <>
     <Background onClose={onClose}>
-    hola
+       
     </Background>
     </>
   )
