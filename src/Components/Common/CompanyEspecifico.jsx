@@ -19,8 +19,10 @@ import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import Cookies from 'js-cookie';
+
 //Api
 import { Companys } from '../../Services/ApiCompany/Companys';
+
 //icons
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 import EditIcon from '@mui/icons-material/Edit';
@@ -363,7 +365,7 @@ function CompanyEspecifico() {
 
     {isEditCompanyVisible && <EditDataCompany onClose={handleCloseBackground} /> }
     {isBotAiVisible && <BotAi onClose={handleCloseBackground} /> }
-    {isEditRolVisible  && <EditRolCompany  onClose={handleCloseBackground} /> }
+    {isEditRolVisible  && <EditRolCompany selectedPerson={selectedPerson} onClose={handleCloseBackground} /> }
 
     </Navbar_sidebar>
     
