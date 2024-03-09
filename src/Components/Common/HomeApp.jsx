@@ -118,12 +118,16 @@ function HomeApp(props) {
        {typeof getcompanys.length === 'undefined' ? (
   <Card 
     variant="outlined" 
-    sx={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
+    sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       height: { xs: '200px', sm: '200px', md: '200px', lg: '290px' },
-      boxShadow: 3 
+      boxShadow: 3,
+      cursor: 'pointer', 
+      '&:hover': {
+        boxShadow: '0 4px 20px 0 rgba(0,0,0,0.12), 0 7px 8px -4px rgba(0,0,0,0.2)' // Efecto de sombra al hacer hover
+      }
     }}
   >
     <CardContent 
@@ -146,7 +150,11 @@ function HomeApp(props) {
               justifyContent: 'center', 
               alignItems: 'center', 
               height: { xs: '200px', sm: '100%', md: '100%', lg: '100%' },
-              boxShadow: 3 
+              boxShadow: 3,
+              cursor: 'pointer', 
+              '&:hover': {
+                boxShadow: '0 4px 20px 0 rgba(0,0,0,0.12), 0 7px 8px -4px rgba(0,0,0,0.2)'
+              }
             }}
           >
             <CardContent 
@@ -173,7 +181,16 @@ function HomeApp(props) {
   getcompanys.map((company) => (
     <Grid item xs={12} sm={6} md={4} lg={3} key={company.CompanyId}>
       <Link to={`/CompanyEspecific/${company.CompanyId}`}>
-        <Card variant="outlined">
+        <Card 
+        variant="outlined"
+        sx={{
+          boxShadow: 3,
+          cursor: 'pointer', 
+          '&:hover': {
+            boxShadow: '0 4px 20px 0 rgba(0,0,0,0.12), 0 7px 8px -4px rgba(0,0,0,0.2)'
+          }
+        }}
+        >
           <CardOverflow>
             <AspectRatio ratio="2">
               <img src={Bussness} loading="lazy" alt="Bussness" />
