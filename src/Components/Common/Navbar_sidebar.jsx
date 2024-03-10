@@ -13,7 +13,7 @@ import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import '../../../src/Assets/Css/ModalSweetAlert.css'
+import '../../../src/Assets/Css/ModalSweetAlert.css';
 
 //Componente
 import Loading from './Loading';

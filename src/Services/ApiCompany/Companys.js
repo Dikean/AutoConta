@@ -6,7 +6,6 @@ const ApiUrl = AppUrl +'api'; // Url
 
 export const Companys = {
 
-
   getCompanysByUserId: () => {
 
     const token = Cookies.get('authToken'); // Obtiene el token de la 
@@ -19,7 +18,7 @@ export const Companys = {
   })
   .then(response => {
       // Manejar la respuesta exitosa
-
+    console.log("tiene company?"+JSON.stringify(response.data));
       return response.data
 
       // Aquí puedes hacer lo que necesites con response.data
@@ -138,7 +137,8 @@ export const Companys = {
       }
     })
     .then(response => {
-
+      
+      console.log("Rol and company"+response.data);
       return response.data; // Retorna directamente los datos, sin convertirlos a string
     })
     .catch(error => {
@@ -146,7 +146,6 @@ export const Companys = {
       console.error("Error en la solicitud getUserByCompanyEspecific:", error);
     });
   },
-  
   
   postJoinOneCompany: (Datos) => {
     const token = Cookies.get('authToken');
@@ -162,6 +161,46 @@ export const Companys = {
     })
     .catch(error => {
       console.error("Error en la solicitud:", error);
+    });
+  },
+
+  putRolInCompany: (Datos) => {
+    const token = Cookies.get('authToken');
+  
+    // Utilizar axios de manera que puedas incluir el cuerpo en la solicitud delete
+    return axios({
+      method: 'put',
+      url: `${ApiUrl}/userscompany/updateRolInCompany`,
+      data: Datos, // Aquí pasas los datos en el cuerpo de la solicitud
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      console.log("Cambio derol exitosamente", response.data);
+    })
+    .catch(error => {
+      console.error("Error en la solicitud de envio:", error);
+    });
+  },
+  
+  deleteUserByAdminCompany: (Datos) => {
+    const token = Cookies.get('authToken');
+  
+    // Utilizar axios de manera que puedas incluir el cuerpo en la solicitud delete
+    return axios({
+      method: 'delete',
+      url: `${ApiUrl}/userscompany/deleteUserByAdminCompany`,
+      data: Datos, // Aquí pasas los datos en el cuerpo de la solicitud
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      console.log("Eliminado exitosamente de la company", response.data);
+    })
+    .catch(error => {
+      console.error("Error en la solicitud de envio:", error);
     });
   },
 

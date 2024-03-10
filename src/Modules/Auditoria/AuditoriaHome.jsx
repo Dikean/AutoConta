@@ -58,14 +58,14 @@ function AuditoriaHome() {
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-          <Tab label="Venta" {...a11yProps(0)} />
-          <Tab label="Compra" {...a11yProps(1)} />
+          <Tab label="Compra" {...a11yProps(0)} />
+          {/* <Tab label="Compra" {...a11yProps(1)} /> */}
         </Tabs>
-      </Box>
-      <CustomTabPanel value={value} index={0}>
+       </Box>
+     {/* <CustomTabPanel value={value} index={0}>
        <ExcelComparator/>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
+      </CustomTabPanel> */}
+      <CustomTabPanel value={value} index={0}>
        <ConciliacionCompra />
       </CustomTabPanel>
     </Box>

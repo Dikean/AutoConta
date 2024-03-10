@@ -37,6 +37,7 @@ function HomeApp(props) {
   const [cargaIntentos, setCargaIntentos] = useState(0);
   const [isComponentVisible, setIsComponentVisible] = useState(false);
   const [isChartVisible, setIsChartVisible] = useState(false);
+  const [noData, setNoData] = useState(false);
 
   useEffect(() => {
     Companys.getCompanysByUserId()
@@ -46,13 +47,15 @@ function HomeApp(props) {
         } else {
           console.log("La respuesta de la API no contiene datos");
           // Incrementa el contador de intentos para reintentar la carga
-          setCargaIntentos(cargaIntentos => cargaIntentos + 1);
+          reintentaCarga()
+
+
+          console.log("get companys"+getcompanys);
         }
       })
       .catch(error => {
         console.error("Error al cargar las compañías", error);
-        // Incrementa el contador de intentos para reintentar la carga
-        setCargaIntentos(cargaIntentos => cargaIntentos + 1);
+        reintentaCarga()
       });
   }, [cargaIntentos]); // Dependencia del efecto
 
@@ -66,6 +69,9 @@ function HomeApp(props) {
     setIsComponentVisible(false);
     setIsChartVisible(false);
   };
+
+
+  console.log("get company"+getcompanys.length);
 
 
   return (
@@ -109,15 +115,19 @@ function HomeApp(props) {
        {/* Card create data */}
        <Grid item xs={12} sm={6} md={4} lg={3} onClick={() => setIsComponentVisible(!isComponentVisible)}>
         
-       {getcompanys.length === 0 ? (
+       {typeof getcompanys.length === 'undefined' ? (
   <Card 
     variant="outlined" 
-    sx={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
+    sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       height: { xs: '200px', sm: '200px', md: '200px', lg: '290px' },
-      boxShadow: 3 
+      boxShadow: 3,
+      cursor: 'pointer', 
+      '&:hover': {
+        boxShadow: '0 4px 20px 0 rgba(0,0,0,0.12), 0 7px 8px -4px rgba(0,0,0,0.2)' // Efecto de sombra al hacer hover
+      }
     }}
   >
     <CardContent 
@@ -140,7 +150,11 @@ function HomeApp(props) {
               justifyContent: 'center', 
               alignItems: 'center', 
               height: { xs: '200px', sm: '100%', md: '100%', lg: '100%' },
-              boxShadow: 3 
+              boxShadow: 3,
+              cursor: 'pointer', 
+              '&:hover': {
+                boxShadow: '0 4px 20px 0 rgba(0,0,0,0.12), 0 7px 8px -4px rgba(0,0,0,0.2)'
+              }
             }}
           >
             <CardContent 
@@ -160,46 +174,52 @@ function HomeApp(props) {
       </Grid>
 
 
-  {getcompanys.length > 0 ? (
-    getcompanys.map((company) => (
-      <Grid item xs={12} sm={6} md={4} lg={3} key={company.CompanyId}>
-       <Link to={`/CompanyEspecific/${company.CompanyId}`}>
-         <Card variant="outlined" >
-      <CardOverflow>
-        <AspectRatio ratio="2">
-      
-        <img 
-        src={Bussness}
-        loading="lazy"
-        alt="Bussness"/>
-        
-        </AspectRatio>
-      </CardOverflow>
-      <CardContent>
-        <Typography level="title-md">{company.NameCompany}</Typography>
-        <Typography level="body-sm">{company.Email}</Typography>
-      </CardContent>
-      <CardOverflow variant="soft" sx={{ bgcolor: 'background.level1' }}>
-        <Divider inset="context" />
-        <CardContent orientation="horizontal">
-          <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-            Ubicacion
-          </Typography>
-          <Divider orientation="vertical" />
-          <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
-          {company.Ubicacion}
-          </Typography>
-        </CardContent>
-      </CardOverflow>
-    </Card>
-    </Link>
-      </Grid>
-    ))
-  ) : (
-    <Box sx={{ display: 'flex' }} className="p-4">
-    <Loading /> 
-  </Box>
-  )}
+      {typeof getcompanys === 'undefined' ? (
+  <>
+  </> // No renderiza nada si getcompanys es undefined
+) : getcompanys.length > 0 ? (
+  getcompanys.map((company) => (
+    <Grid item xs={12} sm={6} md={4} lg={3} key={company.CompanyId}>
+      <Link to={`/CompanyEspecific/${company.CompanyId}`}>
+        <Card 
+        variant="outlined"
+        sx={{
+          boxShadow: 3,
+          cursor: 'pointer', 
+          '&:hover': {
+            boxShadow: '0 4px 20px 0 rgba(0,0,0,0.12), 0 7px 8px -4px rgba(0,0,0,0.2)'
+          }
+        }}
+        >
+          <CardOverflow>
+            <AspectRatio ratio="2">
+              <img src={Bussness} loading="lazy" alt="Bussness" />
+            </AspectRatio>
+          </CardOverflow>
+          <CardContent>
+            <Typography level="title-md">{company.NameCompany}</Typography>
+            <Typography level="body-sm">{company.Email}</Typography>
+          </CardContent>
+          <CardOverflow variant="soft" sx={{ bgcolor: 'background.level1' }}>
+            <Divider inset="context" />
+            <CardContent orientation="horizontal">
+              <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
+                Ubicacion
+              </Typography>
+              <Divider orientation="vertical" />
+              <Typography level="body-xs" fontWeight="md" textColor="text.secondary">
+                {company.Ubicacion}
+              </Typography>
+            </CardContent>
+          </CardOverflow>
+        </Card>
+      </Link>
+    </Grid>
+  ))
+) : (
+  <></> // O puedes optar por mostrar un mensaje específico de "No hay compañías disponibles"
+)}
+
     </Grid>
 
 

@@ -53,7 +53,6 @@ function CreateCompany({onClose}) {
     // Aquí puedes agregar lógica adicional si es necesario
     Companys.postCreateCompanys({ ...formData, userId: UserId , UserPhoto: UserPhoto, EmailUserSeeRol: Email })
     .then(response => {
-    
       Swal.fire({
         title: '¡Éxito!',
         text: 'Compañía creada exitosamente',
@@ -143,8 +142,6 @@ function CreateCompany({onClose}) {
                   <SettingsIcon/>
                   </Button>
               </div>
-
-            
             </Typography>
 
             <form className="mt-3" onSubmit={handleSubmit}>
@@ -186,8 +183,8 @@ function CreateCompany({onClose}) {
         </div>
       
             </form>
-
           </CardContent>
+
          )}
         {isJoinOneCompanyVisible && ( 
           <CardContent>
