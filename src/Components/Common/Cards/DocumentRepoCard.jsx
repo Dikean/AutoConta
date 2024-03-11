@@ -68,8 +68,7 @@ const filteredDocuments = getDocumentscompany.filter(company => {
 
   return (
         <>
-
-     < div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}> {/* Contenedor Flex */}
+      < div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}> {/* Contenedor Flex */}
                  
         {filteredDocuments.map((company, index) => (
           <Card
@@ -117,20 +116,19 @@ const filteredDocuments = getDocumentscompany.filter(company => {
               >
                 <Typography level="h2" noWrap sx={{ fontSize: 'lg' }}>
           <Link href="#dribbble-shot" overlay underline="none">
-  <span
-    style={{
-      color: '#fff',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      display: 'block',
-      width: '100%', // Asegúrate de que el span ocupe el ancho completo del Link
-    }}
-  >
-    {company.categoria}
-  </span>
-</Link>
-
+          <span
+  style={{
+    color: '#fff',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    display: 'block',
+    width: '100%', // Asegúrate de que el span ocupe el ancho completo del contenedor
+  }}
+>
+  {company.Name.length > 11 ? `${company.Name.substring(0, 11)}...` : company.Name}
+          </span>
+          </Link>
 
                 </Typography>
                 {/* Button delete only for admin */}
@@ -172,7 +170,6 @@ const filteredDocuments = getDocumentscompany.filter(company => {
           </Card>
               ))}
       </div>
-     
         </>
   )
 

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Background from './Background'
 import Button from '@mui/material/Button';
-
+import TextField from '@mui/material/TextField';
 import Swal from 'sweetalert2';
+
 //components
 
 
@@ -17,6 +18,10 @@ function UploadDocumentByCompany({onClose}) {
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState('');
 
+    //hooks
+    const [category, setCategory] = useState('');
+
+
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
         if (selectedFile) {
@@ -27,40 +32,55 @@ function UploadDocumentByCompany({onClose}) {
 
     const handleFileUpload = () => {
 
-      const category = "categoria01"
-        Companys.postSendDataToFirebase(CompanyId, file, fileName, category).then(response => {
-                Swal.fire({
-                    title: '¡Éxito!',
-                    text: 'Subiste el archivo exitosamente.',
-                    icon: 'success',
-                    confirmButtonText: 'Ok',
-                    customClass: {
-                      container: 'swal2-popup-custom '
-                    }
-                  }).then((result) => {
-                    if (result.value) {
-                      // Si el usuario presiona "Ok", refresca la página
-                      window.location.reload();
-                    }
-                  });
-        
-        })
-        .catch(error => {
-            Swal.fire({
-                title: 'Error',
-                text: 'Ha ocurrido un error al intentar Subir los documentos.',
-                icon: 'error',
-                confirmButtonText: 'Ok',
-                customClass: {
-                  container: 'swal2-popup-custom '
-                }
-              }).then((result) => {
-                if (result.value) {
-                  // Si el usuario presiona "Ok", refresca la página
-                  window.location.reload();
-                }
-              });
-        });
+      // Validación de la categoría
+    if (!category.trim()) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Debes colocar una categoria.',
+        icon: 'error',
+        confirmButtonText: 'Ok',
+        customClass: {
+          container: 'swal2-popup-custom '
+        }
+      });
+    } else{
+      
+      Companys.postSendDataToFirebase(CompanyId, file, fileName, category).then(response => {
+        Swal.fire({
+            title: '¡Éxito!',
+            text: 'Subiste el archivo exitosamente.',
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            customClass: {
+              container: 'swal2-popup-custom '
+            }
+          }).then((result) => {
+            if (result.value) {
+              // Si el usuario presiona "Ok", refresca la página
+              window.location.reload();
+            }
+          });
+
+      })
+      .catch(error => {
+          Swal.fire({
+              title: 'Error',
+              text: 'Ha ocurrido un error al intentar Subir los documentos.',
+              icon: 'error',
+              confirmButtonText: 'Ok',
+              customClass: {
+                container: 'swal2-popup-custom '
+              }
+            }).then((result) => {
+              if (result.value) {
+                // Si el usuario presiona "Ok", refresca la página
+                window.location.reload();
+              }
+            });
+      });
+
+    }
+
     };
 
   return (
@@ -70,6 +90,17 @@ function UploadDocumentByCompany({onClose}) {
     <div className="flex flex-col items-center justify-center bg-white p-5">
 
         <h1 className='font-bold p-3'>Subir Archivo</h1>
+
+        
+        <TextField
+        id="standard-basic"
+        label="Categorías"
+        variant="standard"
+        className='mb-2'
+        value={category} // Asegúrate de controlar el valor con el estado
+        onChange={(e) => setCategory(e.target.value)} // Actualiza el estado con el valor ingresado
+        />
+
 
         <label className="mt-3 border-dashed border-[#e0e0e0] w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white">
           <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

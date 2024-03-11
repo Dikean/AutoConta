@@ -59,7 +59,7 @@ function CreateCompany({onClose}) {
         icon: 'success',
         confirmButtonText: 'OK',
         customClass: {
-          popup: 'swal2-popup-custom'
+          container: 'swal2-popup-custom '
         }
        }).then((result) => {
         // Si el usuario hace clic en "OK", recarga la página o redirige según necesites
