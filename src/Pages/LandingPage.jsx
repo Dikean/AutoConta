@@ -8,6 +8,8 @@ import IconWhatssap from "../Components/Common/IconWhatssap";
 import Stat from "../Components/Views/SitePages/Stat";
 import TableCard from "../Components/Common/Table/TableCard";
 import { Link } from 'react-router-dom';
+import Logo from '../../src/Assets/Img/Logo.png'
+import WebLanding from '../../src/Assets/Img/webLanding.png'
 
 //Auth 0
 import { useAuth0 } from "@auth0/auth0-react";
@@ -26,7 +28,7 @@ function LandingPage() {
                 <nav className="w-full ">
                     <div className="py-5 md:py-0 container mx-auto px-6 flex items-center justify-between">
                         <div aria-label="Home. logo" role="img">
-                            <img className="w-12 md:w-auto" src="https://tuk-cdn.s3.amazonaws.com/can-uploader/centre_aligned_simple-Svg1.svg" alt="logo" />
+                            <img className="w-12 md:w-auto" src={Logo} alt="logo" style={{ width: '70px', height: '70px' }} />
                         </div>
                         <div>
                             <button onClick={() => setShow(!show)} className={`${show ? 'hidden' : ''} sm:block md:hidden text-gray-500 hover:text-gray-700 focus:text-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500`}>
@@ -80,7 +82,7 @@ function LandingPage() {
 
                 <div className="container mx-auto flex justify-center">
                         <div className="sm:w-2/3 w-11/12">
-                            <img src="https://tuk-cdn.s3.amazonaws.com/assets/components/hero/h_2.png" alt="Sample Page" role="img" />
+                            <img src={WebLanding} alt="Sample Page" role="img" />
                         </div>
                     </div>
           

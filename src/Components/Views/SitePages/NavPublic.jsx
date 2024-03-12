@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import Logo from '../../../Assets/Img/Logo.png'
 
 //Auth 0
 import { useAuth0 } from "@auth0/auth0-react";
@@ -18,7 +18,7 @@ export default function NavPublic({children}) {
                     <div className="py-5 md:py-0 container mx-auto px-6 flex items-center justify-between">
                        <a href="/">
                         <div aria-label="Home. logo" role="img" >
-                            <img className="w-12 md:w-auto"  src="https://tuk-cdn.s3.amazonaws.com/can-uploader/centre_aligned_simple-Svg1.svg" alt="logo" />
+                            <img className="w-12 md:w-auto"  src={Logo} alt="logo" style={{ width: '70px', height: '70px' }} />
                         </div>
                         </a> 
 

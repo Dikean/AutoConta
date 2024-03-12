@@ -1,7 +1,9 @@
-import React from 'react'
+import React from 'react';
+import Logo from '../../../Assets/Img/Logo small.png';
 
 function Footer() {
-  return (
+ 
+    return (
  <>
  <footer class="bg-white dark:bg-gray-900">
     <div class="container px-6 py-12 mx-auto">
@@ -42,8 +44,8 @@ function Footer() {
         <hr class="my-6 border-gray-200 md:my-8 dark:border-gray-700"/>
         
         <div class="flex items-center justify-between">
-            <a href="#">
-                <img class="w-auto h-7" src="https://merakiui.com/images/full-logo.svg" alt=""/>
+            <a href="#"> 
+                <img class="w-auto h-7" src={Logo} alt="" style={{ width: '100px', height: '100px' }}/>
             </a>
             
             <div class="flex -mx-2">
@@ -78,7 +80,7 @@ function Footer() {
     </div>
 </footer>
  </>
-  )
+   )
 }
 
 export default Footer

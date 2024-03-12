@@ -2,6 +2,9 @@ import React from 'react'
 import NavPublic from '../../Components/Views/SitePages/NavPublic'
 import Footer from '../../Components/Views/SitePages/Footer'
 import IconWhatssap from '../../Components/Common/IconWhatssap'
+
+import Logo from '../../Assets/Img/Logo.png'
+
 function Contact() {
   return (
   <>
@@ -13,17 +16,16 @@ function Contact() {
         <div className="container flex flex-col flex-1 px-6 py-12 mx-auto">
           <div className="flex-1 lg:flex lg:items-center lg:-mx-6">
             <div className="text-white lg:w-1/2 lg:mx-6">
-              <h1 className="text-2xl font-semibold capitalize lg:text-3xl">Ultimate design solution</h1>
+              <h1 className="text-2xl font-semibold capitalize lg:text-3xl">Contáctanos en AutoConta</h1>
               <p className="max-w-xl mt-6">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem quo
-                aliquid molestiae hic incidunt beatae placeat accusantium! Alias ex quisquam ab tempora. Ratione
-                autem doloremque ducimus numquam doloribus, error sed.
+              En AutoConta, estamos aquí para ayudarte a simplificar tu contabilidad
+              y finanzas. Si tienes preguntas, necesitas asistencia o deseas saber más
+              sobre nuestros servicios, no dudes en ponerte en contacto con nosotros.
+              Nuestro equipo está listo para ofrecerte el soporte y la información
+              que necesitas para tomar las mejores decisiones para tu negocio.
+              ¡Esperamos saber de ti pronto!
               </p>
-              <button className="px-8 py-3 mt-6 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-600 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-50">
-                get in touch
-              </button>
               <div className="mt-6 md:mt-8">
-                <h3 className="text-gray-300">Follow us</h3>
                 <div className="flex mt-4 -mx-1.5">
                   {/* Social Icons */}
                   {/* ... */}
