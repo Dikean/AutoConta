@@ -19,6 +19,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import Cookies from 'js-cookie';
+import Skeleton from '@mui/material/Skeleton';
 
 //Api
 import { Companys } from '../../Services/ApiCompany/Companys';
@@ -182,53 +183,69 @@ function CompanyEspecifico() {
         <Grid item xs={12} md={8}>
 
     
+        {/* Name Company*/}
+        {getcompany.length > 0 ? (
+          getcompany.map((company, index) => (
+            <Auditoria_CompanyEspecific_Breadcrumbs key={index} NameCompany={company.NameCompany} />
+          ))
+        ) : (
+          <Skeleton variant="rounded" width={200} height={15} className='mt-3 mb-5' />
+        )}
 
-        {getcompany.map((company, index) => (
-    
-         <Auditoria_CompanyEspecific_Breadcrumbs NameCompany={company.NameCompany}/>
-         ))}
 
         <Grid container spacing={2} sx={{  marginBottom: '4%' }}>
         <Grid item xs={12} md={6} >
+          
+        {/* Video */}
+        {getcompany.length > 0 ? (
+            <Box
+            component="ul"
+            sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', p: 0, m: 0 }}
+             >
+     
+           <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
+             <CardCover>
+               <video
+                 autoPlay
+                 loop
+                 muted
+                 poster={CompanyFoto}
+               >
+                 <source
+                   src="https://firebasestorage.googleapis.com/v0/b/autoconta-12190.appspot.com/o/ContentVideoAutoConta%2FCity.mp4?alt=media&token=e8570b07-98ea-4038-9c63-5281a1ed6ca8"
+                   type="video/mp4"
+                 /> 
+               </video>
+     
+             </CardCover>
+             <CardContent>
+             {getcompany.map((company, index) => (
+               <Typography
+                 level="body-lg"
+                 fontWeight="lg"
+                 textColor="#fff"
+                 mt={{ xs: 12, sm: 18 }}
+               >
+                {company.NameCompany}
+               </Typography>
+                     ))}
+             </CardContent>
+           </Card> 
+         
+            </Box>
+        
+        ) : (
+          <Skeleton variant="rounded" width={460} height={220} className='' />
+        )}
+        
 
-         <Box
-      component="ul"
-      sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', p: 0, m: 0 }}
-        >
-
-      <Card component="li" sx={{ minWidth: 300, flexGrow: 1 }}>
-        <CardCover>
-          <video
-            autoPlay
-            loop
-            muted
-            poster={CompanyFoto}
-          >
-            <source
-              src="https://firebasestorage.googleapis.com/v0/b/autoconta-12190.appspot.com/o/ContentVideoAutoConta%2FCity.mp4?alt=media&token=e8570b07-98ea-4038-9c63-5281a1ed6ca8"
-              type="video/mp4"
-            /> 
-          </video>
-
-        </CardCover>
-        <CardContent>
-        {getcompany.map((company, index) => (
-          <Typography
-            level="body-lg"
-            fontWeight="lg"
-            textColor="#fff"
-            mt={{ xs: 12, sm: 18 }}
-          >
-           {company.NameCompany}
-          </Typography>
-                ))}
-        </CardContent>
-      </Card> 
-    
-        </Box>
+   
         </Grid>
         <Grid item xs={12} md={5} >
-        {getcompany.map((company, index) => (
+
+        {getcompany.length > 0 ? (
+        <>
+          {getcompany.map((company, index) => (
           <div key={index}>
 
             <div className="flex justify-between items-center">
@@ -246,10 +263,27 @@ function CompanyEspecifico() {
 
           <p className='mt-5'> <strong>Código:</strong> {company.Codigo}</p> 
           <p><strong>Email:</strong> {company.Email}</p>
-          <p className='mb-3'><strong>Ubicaccion:</strong> {company.Ubicacion}</p>
+          <p className='mb-3'><strong>Ubicación:</strong> {company.Ubicacion}</p>
           </div>
          
           ))}
+        </>
+        ):(<>
+        
+          <div>
+
+            <div className="flex justify-between items-center ">
+            <Skeleton variant="rounded" width={65} height={30} className='mb-5' />
+            </div>
+
+            <Skeleton variant="rounded" width={120} height={12} className='mt-5' />
+            <Skeleton variant="rounded" width={190} height={12} className='mt-2' />
+            <Skeleton variant="rounded" width={160} height={12} className='mt-2 mb-3 ' />
+          </div>
+         
+        
+        </>)}
+ 
          
           <Divider sx={{width: '200px'}}></Divider>
     
@@ -284,7 +318,7 @@ function CompanyEspecifico() {
         <TabPanel value="1">Item One</TabPanel>
         <TabPanel value="2">Item Two</TabPanel> */}
         <TabPanel value="1">
-        <Repositorio RolUser={getRol}/>
+        <Repositorio RolUser={getRol} />
         </TabPanel>
 
         </TabContext>
@@ -293,14 +327,14 @@ function CompanyEspecifico() {
 
       {/* solo para Administrador de la company */}
 
-      {getRol === "Administrator" && (
-       <Grid item xs={12} md={4}>
 
+      {getRol === "Administrator" && getcompany.length > 0 ?(
+
+       <Grid item xs={12} md={4}>
           <Item  sx={{  marginBottom: '8%' }}>
-            
             <div className='p-1'>
-              <h1>Usuarios</h1>
-              <ul role="list" className="divide-y divide-gray-100 p-5">
+              <h1 className='mt-1 font-bold text-black'>Usuarios</h1>
+              <ul role="list" className="divide-y divide-gray-100 px-5 py-3">
   {currentItems.map((person, index) => (
     <li key={index} className="flex justify-between gap-x-6 py-5">
       <div className="flex min-w-0 gap-x-4">
@@ -320,7 +354,7 @@ function CompanyEspecifico() {
   ))}
 </ul>
 
-      <div >
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '5px' }}>
         <Button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
           <ArrowBackIosIcon style={{ fontSize: 10 }} />
         </Button>
@@ -329,15 +363,53 @@ function CompanyEspecifico() {
         </Button>
       </div>
             </div>
-
           </Item>
-
         {/* Columna 2 chart*
           <Item  sx={{  marginBottom: '5%' }}>
            <BarChart/>
           </Item>  */}
-
       </Grid>
+
+      ) : (
+
+      <Grid item xs={12} md={4}>
+         <Item  sx={{  marginBottom: '8%' }}>
+
+         <div className='p-1'>
+          
+           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+           <Skeleton variant="text" sx={{ fontSize: '1rem' }} width={80} height={12}/>
+           </div>
+              <ul role="list" className="divide-y divide-gray-100 px-5 py-3">
+                <li className="flex justify-between gap-x-6 py-5">
+                  <div className="flex min-w-0 gap-x-4">
+                    <Skeleton variant="circular" width={50} height={50}  />
+                    <div className="min-w-0 flex-auto">
+                     <Skeleton variant="rounded" width={180} height={12} className='mt-1'/>   
+
+                     <div className='mt-1' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                     <Skeleton variant="rounded" width={50} height={12} className='mt-1'/> 
+                     </div>
+ 
+                    </div>
+                  </div>  
+                  <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                  <Skeleton variant="rounded" width={40} height={40} className='mt-3 mb-5' />
+                  </div>
+                </li>
+              </ul>
+
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '5px' }}>
+              <Skeleton variant="rounded" width={40} height={40} className='mt-3 mb-5' />
+              <Skeleton variant="rounded" width={40} height={40} className='mt-3 mb-5' />
+              </div>
+
+
+         </div>
+
+         </Item>
+      </Grid>
+
       )}
       
       </Grid>

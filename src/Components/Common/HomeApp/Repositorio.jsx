@@ -51,6 +51,7 @@ function Repositorio({RolUser}) {
 
   return (
     <>
+
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
         {/* Search */}
@@ -84,8 +85,6 @@ function Repositorio({RolUser}) {
         </Grid>
       </Grid>
     </Grid>
-
-    
     
     {isFolderVisible && <BigFolderView onClose={handleCloseBackground} />}
     {isUploadDocumentVisible && <UploadDocumentByCompany onClose={handleCloseBackground} />}
