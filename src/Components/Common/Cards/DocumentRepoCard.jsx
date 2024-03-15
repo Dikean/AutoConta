@@ -72,6 +72,7 @@ const filteredDocuments = getDocumentscompany.filter(company => {
                  
         {filteredDocuments.map((company, index) => (
           <Card
+          key={index}
         variant="plain"
         sx={{
           width: 200,

@@ -90,11 +90,9 @@ function CompanyEspecifico() {
     navigator.clipboard.writeText(value)
       .then(() => {
         // Opcional: Mostrar alguna notificación de éxito
-        console.log("Valor copiado al portapapeles");
       })
       .catch(err => {
         // Opcional: Manejar errores de copia
-        console.error("No se pudo copiar al portapapeles", err);
       });
   };
 
@@ -176,8 +174,6 @@ function CompanyEspecifico() {
    
     <Navbar_sidebar>
 
-
-
       <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
@@ -235,7 +231,7 @@ function CompanyEspecifico() {
             </Box>
         
         ) : (
-          <Skeleton variant="rounded" width={460} height={220} className='' />
+          <Skeleton variant="rounded" width={400} height={220} className='' />
         )}
         
 
@@ -288,7 +284,7 @@ function CompanyEspecifico() {
           <Divider sx={{width: '200px'}}></Divider>
     
           {getcompany.map((company, index) => (
-          <div className="mt-3">
+          <div className="mt-3" key={index}>
                 {getRol === "Administrator" && (
           <Input placeholder='Access Key'  variant="soft" size="sm" 
           className='mb-2'
