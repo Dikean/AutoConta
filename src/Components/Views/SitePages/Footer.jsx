@@ -5,8 +5,8 @@ function Footer() {
  
     return (
  <>
- <footer class="bg-white dark:bg-gray-900">
-    <div class="container px-6 py-12 mx-auto">
+ <footer class="bg-white dark:bg-gray-900 p-5">
+    <div class="container px-6 py-12 mx-auto p-5">
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
             <div class="sm:col-span-2">
                 <h1 class="max-w-lg text-xl font-semibold tracking-tight text-gray-800 xl:text-2xl dark:text-white">Subscribete para recibir noticias.</h1>
@@ -21,16 +21,16 @@ function Footer() {
             </div>
 
             <div>
-                <p class="font-semibold text-gray-800 dark:text-white">Quick Link</p>
+                <p class="font-semibold text-gray-800 dark:text-white">Enlaces Rapidos</p>
 
                 <div class="flex flex-col items-start mt-5 space-y-2">
-                    <a href="#" class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500">Home</a>
-                    <a href="#" class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500">Who We Are</a>
-                    <a href="#" class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500">Our Philosophy</a>
+                    <a href="/" class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500">Inicio</a>
+                    <a href="/about-us" class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500">Sobre Nosotros</a>
+                    <a href="/contact" class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500">Contacto</a>
                 </div>
             </div>
 
-            <div>
+            {/* <div>
                 <p class="font-semibold text-gray-800 dark:text-white">Industries</p>
 
                 <div class="flex flex-col items-start mt-5 space-y-2">
@@ -38,7 +38,7 @@ function Footer() {
                     <a href="#" class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500">Information Technology</a>
                     <a href="#" class="text-gray-600 transition-colors duration-300 dark:text-gray-300 dark:hover:text-blue-400 hover:underline hover:text-blue-500">Finance & Insurance</a>
                 </div>
-            </div>
+            </div> */}
         </div>
         
         <hr class="my-6 border-gray-200 md:my-8 dark:border-gray-700"/>
